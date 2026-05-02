@@ -15,9 +15,6 @@ This file should stay short and honest.
 
 ## Next
 
-- **Anti-rec list** — `dislikes.md` (gitignored) + `dislikes.example.md`
-  template. Logs rejected artists / scenes / vibes so they never get
-  re-suggested.
 - **Now-playing chaser** — a `/next`-style request: pull the most
   recent scrobble, suggest something that segues sonically.
 - **Cool-down for past recs** — lightweight session log so I don't
@@ -50,3 +47,6 @@ This file should stay short and honest.
 - **Forgotten-gem mode** — `CLAUDE.md`. Surfaces artists in the
   overall top 100–500 unplayed for ≥12 months, framed as "you used
   to love this". Pure retrieval, not discovery.
+- **Anti-rec list** — `dislikes.md` (gitignored) + `dislikes.example.md`
+  template, with the read/filter/append rule wired into `CLAUDE.md`.
+  Rejected picks are now persistent across sessions.

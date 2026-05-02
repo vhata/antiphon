@@ -79,6 +79,8 @@ sometimes-unhinged design space is catalogued in [`WISHLIST.md`](WISHLIST.md).
 | `.env`              | —       | Your last.fm API key.                                  |
 | `moods.example.md`  | ✓       | Mood-library template with one worked example.         |
 | `moods.md`          | —       | Your evolving mood library.                            |
+| `dislikes.example.md` | ✓     | Anti-rec list template.                                |
+| `dislikes.md`       | —       | Your evolving anti-rec list.                           |
 
 ## Design principles
 

@@ -57,6 +57,19 @@ promoting candidates and adding new moods.
 A generic template lives in `moods.example.md` — copy it to `moods.md`
 on a fresh setup.
 
+## Dislikes (anti-rec list)
+
+`dislikes.md` (gitignored; template at `dislikes.example.md`) records
+artists, sub-genres, scenes, vibes, and specific albums the listener
+has actively rejected. Read it whenever making recommendations and
+filter against it as hard as you filter against their top artists —
+don't re-suggest something they've already said no to.
+
+When the user rejects a pick mid-session ("not that", "skip anything
+like X", "I hate jam-band noodling"), append to `dislikes.md`
+immediately — don't wait to be asked. Always include a one-line
+reason; reasons let you judge edge cases later.
+
 ## Spotify links
 
 Each recommendation must be a clickable Spotify link. Format it as a
@@ -88,8 +101,9 @@ When the user asks for recs:
 2. Look at the shape of it: dominant genres, recent shifts, repeated artists
    vs. one-offs, what they've loved.
 3. For each direction worth recommending in, branch via `artist.getSimilar`
-   or `tag.getTopArtists`, then **filter out anything already in their top
-   artists** so you're not recommending what they already listen to.
+   or `tag.getTopArtists`, then filter out (a) anything already in their
+   top artists (already loved) and (b) anything in `dislikes.md` (actively
+   rejected).
 4. Present a small number of picks (5–10) grouped by the rationale —
    "more of what you already love", "adjacent to your recent kick",
    "wildcard from a tag you keep returning to". Always say *why* a pick
