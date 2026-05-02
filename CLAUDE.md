@@ -97,6 +97,30 @@ When the user asks for recs:
 5. If they push back ("more obscure", "less metal", "skip anything I've
    already played"), refine and re-query. Don't dump a giant list up front.
 
+## Forgotten-gem mode
+
+A retrieval-oriented variant of recommendation. Triggered when the
+user asks for "forgotten gems", "what did I used to love", "surface
+something I've forgotten", or similar.
+
+Algorithm:
+
+1. Pull `user.getTopArtists` with `period=overall&limit=500`.
+2. Pull `user.getTopArtists` with `period=12month&limit=200`.
+3. The *dormant set* is artists in the overall top 100–500 that do
+   NOT appear in the 12-month list — they were once well-loved but
+   haven't been played in the last year.
+4. Pick 3–5 from the dormant set, biased toward higher overall play
+   counts, and surface them framed as "you played {artist} {N} times
+   overall but haven't touched them this year".
+5. For each, suggest a specific entry-point — usually their album
+   most represented in the user's history (call `user.getTopAlbums`
+   for the artist if needed) or a canonical record.
+
+The point of this mode is **retrieval, not discovery** — bring back
+what has gone dormant; do not introduce something new. Picks should
+always be artists already in the user's library.
+
 ## Minimising API calls
 
 - Cache nothing on disk — each session re-fetches. Listening history changes.
@@ -107,11 +131,11 @@ When the user asks for recs:
 
 ## Working in this repo
 
-Git is used here as a local safety net — there is no remote and pushing
-is not configured. After any meaningful edit to a tracked file, make a
-commit as part of the same response, without asking permission. Keep
-commit subjects tight; add a body only when it adds context. Never run
-`git push`; if a remote is ever added, still wait for an explicit ask.
+After any meaningful edit to a tracked file, make a commit as part of
+the same response, without asking permission. Keep commit subjects
+tight; add a body only when it adds context. The repo has a public
+remote (`origin` on GitHub) — never `git push` without an explicit
+ask from the user.
 
 ## Out of scope
 

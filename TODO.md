@@ -11,9 +11,7 @@ This file should stay short and honest.
 
 ## In flight
 
-- **Forgotten-gem mode** — surface artists in the overall top 100–500
-  who haven't been played in the last 12 months, framed as "you used
-  to love this". Pure retrieval, not discovery.
+*(nothing in flight — pick from `Next` to start)*
 
 ## Next
 
@@ -49,4 +47,6 @@ This file should stay short and honest.
 
 ## Shipped
 
-*(nothing yet)*
+- **Forgotten-gem mode** — `CLAUDE.md`. Surfaces artists in the
+  overall top 100–500 unplayed for ≥12 months, framed as "you used
+  to love this". Pure retrieval, not discovery.
