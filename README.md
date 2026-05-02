@@ -64,6 +64,45 @@ above are the only ones that hold your data.
 Concrete near-term work lives in [`TODO.md`](TODO.md). The full,
 sometimes-unhinged design space is catalogued in [`WISHLIST.md`](WISHLIST.md).
 
+## Example: a taste portrait
+
+A real session, lightly cleaned up — a worked example of what "reading
+your library back to you" actually looks like in practice.
+
+> **Q: What's the coolest thing you can do that Spotify can't?**
+>
+> Read your library back to you as a portrait. Spotify gives you
+> tracks; Antiphon can give you yourself.
+>
+> Your library says you live in four houses at once. The
+> Bristol-trinity house — Massive Attack runs the kitchen, Portishead
+> lives upstairs, Tricky has never visited (which is strange). The
+> dark-electronic house — Velvet Acid Christ paid the deposit and NIN
+> has been crashing in the spare room since '94. The atmospheric-rock
+> house — Pink Floyd built it from scratch and Tool keeps trying to
+> knock another door in. And the songwriter house — Cohen at the
+> kitchen table, David Gray and Bon Iver in the hallway, Grant Lee
+> Buffalo on the porch, all of them quiet about it.
+>
+> You don't *visit* these houses; you live in them. Velvet Acid Christ
+> at #2 ahead of Massive Attack says you didn't flatter the
+> algorithm — you went where you wanted, and 4,947 plays says you
+> stayed. The Kleptones at 2,420 plays says you love the collage as
+> much as the originals. And the fact that you've played Brian Eno
+> 19 times in twenty years and recognised *Thursday Afternoon* like
+> an old friend says you're a slow burner — you keep canonical names
+> on the shelf for years before pulling them down.
+>
+> Spotify can give you "more like things you played." Antiphon can
+> tell you that you have a Tricky-shaped hole in your house, you've
+> been walking past it for years without seeing it, and the door is
+> exactly where you'd expect it to be. That's the difference.
+
+Every observation above is grounded in real signals from the listening
+data: play counts, ranks, decade spans, and the gap detection
+("Tricky-shaped hole") that algorithmic recommenders structurally
+cannot do.
+
 ## File reference
 
 | File                | Tracked | Purpose                                                |
