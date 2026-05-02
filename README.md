@@ -61,8 +61,8 @@ above are the only ones that hold your data.
 - *"What did I love this time last year?"* — Time-travel mode against
   your scrobble history.
 
-The full design space is catalogued (sometimes seriously, often not) in
-[`TODO.md`](TODO.md).
+Concrete near-term work lives in [`TODO.md`](TODO.md). The full,
+sometimes-unhinged design space is catalogued in [`WISHLIST.md`](WISHLIST.md).
 
 ## File reference
 
@@ -71,7 +71,8 @@ The full design space is catalogued (sometimes seriously, often not) in
 | `CLAUDE.md`         | ✓       | Operating instructions for Claude.                     |
 | `README.md`         | ✓       | This file.                                             |
 | `LICENSE`           | ✓       | MIT.                                                   |
-| `TODO.md`           | ✓       | Wishlist of directions Antiphon could grow in.         |
+| `TODO.md`           | ✓       | Concrete near-term work.                               |
+| `WISHLIST.md`       | ✓       | Full design space, including the unhinged.             |
 | `user.example.md`   | ✓       | Template for personal config.                          |
 | `user.md`           | —       | Your last.fm username and listening notes.             |
 | `.env.example`      | ✓       | Template for credentials.                              |
@@ -87,7 +88,7 @@ The full design space is catalogued (sometimes seriously, often not) in
   forwarded.
 - **Markdown is the architecture.** As long as Antiphon can stay in
   Markdown form, it will. The line at which it would graduate to real
-  software is documented in `TODO.md` § 4.
+  software is documented in `WISHLIST.md` § 4.
 - **The long tail matters.** Antiphon is biased toward respecting the
   obscure half of your library, on the grounds that the mainstream half
   is well-served by every other recommender on earth.
