@@ -133,6 +133,7 @@ Right now the project has zero application code — `CLAUDE.md` + `moods.md` is 
 - **Scheduled jobs** — cron / launchd / GitHub Actions: nightly pull, weekly digest, monthly retrospective.
 - **Real CLI** — `antiphon recs`, `antiphon mood small-hours`, `antiphon chase`, `antiphon depth pink-floyd`. TypeScript or Python, single binary, dotenv for keys.
 - **Web UI / dashboard** — local Next.js app, charts, mood library, rec inbox.
+- **iOS Shortcut** — opens Claude Code (or a sibling client) with a preset prompt; one-tap "small hours" from a home screen, addressing the 3am-in-bed case without building a real app.
 - **Mobile app** — wrapper around the API, push notifications for new releases.
 - **Email digest** — weekly summary, sent to self.
 - **MCP server** — expose listening-profile + recommendation tooling so other AI clients can ask "what is the user into right now"; integrates with this `CLAUDE.md` directly.

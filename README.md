@@ -100,6 +100,28 @@ sometimes-unhinged design space is catalogued in [`WISHLIST.md`](WISHLIST.md).
 - **Generated content is always labelled.** If Claude produces a fake
   liner note or a hallucinated artist anecdote, it says so plainly.
 
+## "Where's the UI?"
+
+The chat interface *is* the UI. Every recommendation comes through
+conversation; every mood is invoked by name; every rejection is logged
+by telling Claude to filter against it in future sessions. Building a
+traditional UI — a webpage, a CLI, a mobile app — would cross the line
+into "real software" and lose the property that makes Antiphon
+different from every other music recommender.
+
+Two middle-ground extensions could meet ergonomics without breaking
+the philosophy:
+
+- An **iOS Shortcut** that opens Claude Code with a preset prompt,
+  so a one-tap *small hours* sits on a home screen for the
+  3am-in-bed case.
+- An **MCP server** that lets other AI clients (Claude Desktop,
+  ChatGPT, Gemini) query Antiphon's recommendation flow without the
+  user needing to be in this terminal.
+
+Neither is built. Both are noted in [`WISHLIST.md`](WISHLIST.md) for
+when they're worth doing.
+
 ## License
 
 [MIT](LICENSE) — do what you like with it.
