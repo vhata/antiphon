@@ -19,6 +19,13 @@ This file should stay short and honest.
   recent scrobble, suggest something that segues sonically.
 - **Cool-down for past recs** — lightweight session log so I don't
   recommend the same thing twice in nearby sessions.
+- **Optional last.fm MCP integration** — wire up support for
+  [lastfm-mcp.com](https://lastfm-mcp.com) (Rian van der Merwe's
+  hosted MCP) as an alternative to the current `.env`-API-key
+  path. Fork-ers pick: `.env` for self-contained, MCP for lazy
+  setup with OAuth. Document both in README; detect at session
+  start which path is active. Real tradeoff is the new dependency
+  on a hosted third-party service, so default stays self-contained.
 
 ## Soon
 
