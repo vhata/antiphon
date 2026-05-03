@@ -25,13 +25,13 @@ Legend: ✓ shipped · ⋯ in progress
   last.fm API that emit compact text instead of raw JSON. Auto-load
   `.env` so no shell preamble is needed.
 - ✓ **Helper scripts — state editors** (`scripts/mood.py`,
-  `scripts/reject.py`, `scripts/validate.py`, `scripts/add_mood.py`;
-  `make mood NAME='...'` / `make reject LABEL='X' REASON='Y'
-  [CATEGORY='...']` / `make validate MOOD='X' PICK='Y'` /
-  `make add-mood NAME='X' DESC='Y'`) — render a mood as Spotify
-  links, append a rejection, promote a candidate to validated, or
-  scaffold a new mood section. No API key needed; pure file edits
-  via the shared `_moods` / `_dislikes` parser modules.
+  `scripts/reject.py`, `scripts/validate.py`, `scripts/add_mood.py`,
+  `scripts/add_candidate.py`; `make mood` / `reject` / `validate` /
+  `add-mood` / `add-candidate`) — render a mood as Spotify links,
+  append a rejection, promote a candidate to validated, scaffold a
+  new mood, or hand-add a single candidate to a mood. No API key
+  needed; pure file edits via the shared `_moods` / `_dislikes`
+  parser modules.
 - ✓ **First-time setup wizard** (`scripts/setup.py`; `make setup`,
   or `python3 scripts/setup.py` before uv is installed) — interactive
   walkthrough that scaffolds `user.md`, `.env`, `moods.md`, and
