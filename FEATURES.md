@@ -39,6 +39,12 @@ Legend: ✓ shipped · ⋯ in progress
   (last.fm username and API key). Idempotent; skips already-configured
   steps. ONBOARDING reorganised around it as the Quick path with
   manual setup as fallback.
+- ✓ **`make populate-mood NAME='X' [N=5]`** (`scripts/populate_mood.py`)
+  — uses Claude Code headless (`claude -p`) to propose candidate picks
+  for a mood. The first script that invokes an LLM rather than just
+  wrapping data; prompt includes the mood's description and the
+  listener's top-artists across four time windows. Picks appended via
+  the shared `_moods.replace_subsection_body`.
 - ✓ **Shared Markdown parser modules** (`scripts/_moods.py`,
   `scripts/_dislikes.py`) — single source of truth for parsing and
   mutating `moods.md` and `dislikes.md`. Every script that touches
