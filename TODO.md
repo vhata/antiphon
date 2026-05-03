@@ -53,6 +53,18 @@ This file should stay short and honest.
   with the existing `make validate MOOD=... PICK=...` (promote
   candidate → validated) so the mood lifecycle is fully scriptable
   end-to-end.
+- **Consolidate Markdown parsers into shared modules** — `mood.py`,
+  `validate.py`, and the upcoming `add-mood.py` each parse
+  `moods.md` with their own private regex; same pattern for
+  `reject.py` against `dislikes.md`. Extract into
+  `scripts/_moods.py` and `scripts/_dislikes.py` with one canonical
+  implementation per file: find a section, split bullets, parse a
+  candidate, render a section. Existing scripts re-import; their
+  per-script tests shrink as the parser tests move into the new
+  modules. Reduces parsing-bug surface to one place and lets every
+  future script (`add-mood`, `add-candidate`, etc.) lean on it for
+  free. Should land *before* `add-mood.py` so the new script can
+  use the consolidated parser from day one.
 
 ## Soon
 
@@ -75,4 +87,15 @@ This file should stay short and honest.
 - **Spotify Web API (Client Credentials)** — direct track URIs
   instead of search URLs. ~10 minutes of setup to register an app.
 - **`why this rec?` verbosity setting** — terse / paragraph / essay.
+- **Held in reserve: YAML frontmatter for structured Markdown** —
+  the established Markdown-meets-structure pattern (Hugo / Jekyll /
+  MDX). If the shared-parser approach above hits a real wall — a
+  parsing case that conventions cannot rescue — migrate each `##`
+  section in `moods.md` and `dislikes.md` to carry a 3-line YAML
+  frontmatter block (name, type, brief description) with prose
+  underneath. Adds the `pyyaml` dep. Migration is mechanical
+  (one-time script). Parser becomes `yaml.safe_load` rather than
+  regex. **Do not pull forward** until the shared-parser approach
+  visibly fails — format changes are larger than they look in the
+  abstract.
 
