@@ -77,6 +77,30 @@ not use it.** Antiphon's recommendation logic is the brain (cluster
 reasoning, gap detection, forgotten-gem mode, anti-rec filtering,
 mood-driven selection); the data layer is just inputs to that brain.
 
+## Helper scripts
+
+The `scripts/` directory holds Python helpers that wrap the data-access
+paths above to emit compact text rather than raw JSON. **Prefer these
+over inline curl** when a script for the task exists — they save
+significant context tokens.
+
+Run via `make` targets after sourcing `.env`:
+
+```sh
+set -a; source .env; set +a
+make profile      # listening-shape summary across 4 time windows + loved
+```
+
+Or directly: `uv run python -m scripts.profile`.
+
+Scripts use the self-contained data-access path (`.env` + curl); they
+do not have access to the MCP tools, which are session-only. The
+recommendation brain stays in this file; the scripts are data plumbing.
+
+If a needed script does not exist yet, fall back to the inline approach
+in *Data access — two paths* and consider adding a TODO entry to wire
+it up as a script later.
+
 ## Moods
 
 User-validated mood / context buckets live in `moods.md`. When the
