@@ -36,18 +36,20 @@ searches. Click through to play.
 
 After `make install` (uv-managed Python deps):
 
-| Command                         | What it does                                                    | Needs `.env` |
-| ------------------------------- | --------------------------------------------------------------- | :----------: |
-| `make profile`                  | Compact listening-shape across 4 time windows + recent + loved. | yes          |
-| `make gems`                     | Dormant artists in the overall top 100–500.                     | yes          |
-| `make mood NAME='<mood>'`       | Picks for a mood as ready-to-click Spotify search links.        | no           |
+| Command                         | What it does                                                    |
+| ------------------------------- | --------------------------------------------------------------- |
+| `make profile`                  | Compact listening-shape across 4 time windows + recent + loved. |
+| `make gems`                     | Dormant artists in the overall top 100–500.                     |
+| `make mood NAME='<mood>'`       | Picks for a mood as ready-to-click Spotify search links.        |
 
 Or run directly: `uv run python -m scripts.profile`,
 `uv run python -m scripts.forgotten_gems [N]`,
 `uv run python -m scripts.mood "<mood>"`.
 
-For the data-fetching scripts, source `.env` first:
-`set -a; source .env; set +a`.
+`profile` and `gems` auto-load `.env` from the repo root if
+`LASTFM_API_KEY` is not already in your shell environment — no need
+to source it manually. `mood` needs no credentials at all; it just
+reads `moods.md`.
 
 ## Files you edit
 

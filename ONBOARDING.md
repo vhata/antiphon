@@ -121,16 +121,11 @@ something like:
 (The older `**last.fm username:**` form also works — the parser is
 case-insensitive and tolerant of either.)
 
-### `make profile` says *"LASTFM_API_KEY not in environment"*
+### `make profile` says *"LASTFM_API_KEY not found in environment or in .env"*
 
-Source `.env` before invoking the data-fetching scripts:
-
-```sh
-set -a; source .env; set +a
-make profile
-```
-
-`make mood` does *not* need this — it only reads `moods.md`.
+Either `.env` does not exist at the repo root, or it does not contain
+a `LASTFM_API_KEY=` line. Run `cp .env.example .env` and paste your
+key in. The scripts auto-load `.env` — no need to source it manually.
 
 ### `make` returns *"No rule to make target"*
 
