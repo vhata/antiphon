@@ -16,7 +16,7 @@
 # (which Make sees as separate goals after shell quoting) don't blow up
 # with "No rule to make target ...". Pattern rules don't shadow
 # explicit rules, so this is safe for the targets we know about.
-ARG_TAKING_TARGETS := mood add-mood populate-mood similar
+ARG_TAKING_TARGETS := mood add-mood populate-mood similar depth
 ifneq ($(filter $(ARG_TAKING_TARGETS),$(firstword $(MAKECMDGOALS))),)
   POSITIONAL_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
   %:
@@ -131,5 +131,13 @@ cooldown: ## Show recs from the last N days ([DAYS=7])
 
 chase: ## Now-playing chaser: similar to the most recent scrobble ([N=5])
 	uv run python -m scripts.chase "$(N)"
+
+depth: ## Artist depth check (ARTIST='X' or positional)
+	@_artist="$(or $(ARTIST),$(POSITIONAL_ARGS))"; \
+	if [ -z "$$_artist" ]; then \
+		echo "usage: make depth ARTIST='<artist>'   or   make depth <artist>"; \
+		exit 64; \
+	fi; \
+	uv run python -m scripts.depth "$$_artist"
 
 .DEFAULT_GOAL := help
