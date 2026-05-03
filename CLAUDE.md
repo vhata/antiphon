@@ -100,6 +100,23 @@ pile is for exactly this. See `WISHLIST.md` § 4 for the line at
 which scripting graduates into "real software" — the helper scripts
 are deliberately on the right side of that line.
 
+## Where state lives
+
+Antiphon's state is text-first by deliberate choice. The hierarchy:
+
+- **Markdown** for human-curated state — `user.md`, `moods.md`,
+  `dislikes.md`. Scripts read and write these in place; humans can
+  diff and edit them.
+- **JSON** for structured-only state when Markdown gets awkward —
+  none yet. Add when forced; gitignore by default.
+- **SQLite** is on the *becomes-software* side of `WISHLIST.md` § 4.
+  Do not introduce it casually; it is a deliberate graduation.
+
+Live data (scrobbles, similar artists, etc.) is fetched from the
+last.fm API per-call; nothing is cached on disk. Claude's own
+session-handoff state lives separately at
+`~/.claude/projects/.../memory/` — outside the repo by design.
+
 ## Helper scripts
 
 The `scripts/` directory holds Python helpers that wrap the data-access
