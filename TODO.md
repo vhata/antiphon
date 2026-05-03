@@ -17,7 +17,25 @@ This file should stay short and honest.
 
 ## Next
 
-*(none — Soon has the next reasonable batch when the user wants more)*
+- **Daily one-track horoscope** (`make daily`) — single pick per day,
+  date-keyed in a gitignored `daily.log.md`, varied across cluster
+  corners so it does not ossify. Strategy rotates by day-of-year:
+  comfort (top 50), forgotten (dormant rank 100-500), gap (similar
+  to top-1, not in library), loved (random from loved tracks),
+  tag-walk (random track from a random user-top tag). Re-running
+  the same day returns the same pick.
+- **Period-in-music report** (`make review PERIOD=month` or `=year`)
+  — composite analytics: top artists this period vs. baseline, what
+  disappeared, what appeared, dominant tags, listening volume curve.
+  Heavy on the LLM-narration side. Useful as a periodic check-in.
+  Larger scope than daily; build only when a real period boundary
+  approaches.
+- **Album-deep mode** — pure Claude convention in `CLAUDE.md`, no
+  script. Sit with one album for the duration of a listen and
+  produce track-by-track liner notes as it plays. Different from
+  `depth` (which suggests what to play next); this is about
+  listening *into* a record. Triggered by phrases like *"sit with
+  me through X"* or *"liner notes for X"*.
 
 ## Soon
 
