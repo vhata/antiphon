@@ -77,6 +77,29 @@ not use it.** Antiphon's recommendation logic is the brain (cluster
 reasoning, gap detection, forgotten-gem mode, anti-rec filtering,
 mood-driven selection); the data layer is just inputs to that brain.
 
+## When to reach for a script vs reason in chat
+
+Antiphon's primary feature is conversational — asking Claude is
+where the genuine taste reasoning lives. But Claude tokens are the
+most expensive ingredient in every session, so the discipline is:
+
+**Reach for a script first.** If a task is mechanical — fetching
+data, filtering, sorting, appending a line to a file, generating a
+URL, promoting a candidate to validated — the answer is a script.
+The `scripts/` directory is the place; the `make` targets are the
+entry points. No reasoning required, no tokens spent.
+
+**Reach for Claude when reasoning is the load-bearing part.**
+Cross-cluster gap detection, taste portraits, why-this-pick prose,
+interpreting mood from messy human language, deciding when to break
+a rule — these are what Claude is for, and what no script can do.
+
+If a recurring task feels like it should not need Claude, it
+probably should not. The first move is a TODO entry; the scripts
+pile is for exactly this. See `WISHLIST.md` § 4 for the line at
+which scripting graduates into "real software" — the helper scripts
+are deliberately on the right side of that line.
+
 ## Helper scripts
 
 The `scripts/` directory holds Python helpers that wrap the data-access
