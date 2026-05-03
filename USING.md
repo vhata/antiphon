@@ -50,7 +50,7 @@ After `make install` (uv-managed Python deps):
 
 | Command                                                           | What it does                                                  |
 | ----------------------------------------------------------------- | ------------------------------------------------------------- |
-| `make mood NAME='<mood>'`                                         | Picks for a mood as ready-to-click Spotify search links.      |
+| `make mood NAME='<mood>'`                                         | Picks for a mood as Spotify search links. No arg lists all moods. |
 | `make reject LABEL='X' REASON='Y' [CATEGORY='Artists']`           | Append to `dislikes.md` under a category.                     |
 | `make validate MOOD='small hours' PICK='Stars of the Lid'`        | Promote a candidate bullet to validated under a mood.         |
 | `make add-mood NAME='deep work' DESC='Focused coding.'`           | Scaffold a new mood section in `moods.md`.                    |

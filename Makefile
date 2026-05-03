@@ -66,13 +66,8 @@ profile: ## Print the listening-shape profile
 gems: ## Print forgotten gems
 	uv run python -m scripts.forgotten_gems
 
-mood: ## Print a mood's picks (NAME='X'  or  make mood X)
-	@_name="$(or $(NAME),$(POSITIONAL_ARGS))"; \
-	if [ -z "$$_name" ]; then \
-		echo "usage: make mood NAME='<mood>'   or   make mood <mood...>"; \
-		exit 64; \
-	fi; \
-	uv run python -m scripts.mood "$$_name"
+mood: ## Print a mood's picks (NAME='X' or positional). No arg lists all.
+	uv run python -m scripts.mood "$(or $(NAME),$(POSITIONAL_ARGS))"
 
 reject: ## Append to dislikes.md (LABEL='X' REASON='Y' [CATEGORY='...'])
 	@if [ -z "$(LABEL)" ] || [ -z "$(REASON)" ]; then \

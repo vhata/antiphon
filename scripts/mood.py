@@ -56,12 +56,25 @@ def render(mood_name: str, mood_section: str) -> str:
     return "\n".join(lines).rstrip() + "\n"
 
 
-def main(mood_name: str) -> int:
+def main(mood_name: str | None = None) -> int:
     if not MOODS_MD.exists():
         print(f"moods.md not found at {MOODS_MD}", file=sys.stderr)
         print("Copy moods.example.md to moods.md to get started.", file=sys.stderr)
         return 1
     text = MOODS_MD.read_text()
+
+    if not mood_name:
+        moods = list_moods(text)
+        if not moods:
+            print("no moods defined yet — try `make add-mood NAME='<name>'` first")
+            return 0
+        print("Available moods:")
+        for m in moods:
+            print(f"  - {m}")
+        print()
+        print("Print picks for a mood: `make mood NAME='<mood>'`  or  `make mood <mood>`")
+        return 0
+
     section = find_mood_section(text, mood_name)
     if section is None:
         print(f"mood '{mood_name}' not found in moods.md", file=sys.stderr)
@@ -76,7 +89,5 @@ def main(mood_name: str) -> int:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print('usage: uv run python -m scripts.mood "<mood name>"', file=sys.stderr)
-        sys.exit(64)
-    sys.exit(main(sys.argv[1]))
+    arg = sys.argv[1] if len(sys.argv) > 1 else None
+    sys.exit(main(arg))
