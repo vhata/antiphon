@@ -129,4 +129,7 @@ log-rec: ## Log a rec to session.log.md (PICK='Artist — Album' [SOURCE='mood']
 cooldown: ## Show recs from the last N days ([DAYS=7])
 	uv run python -m scripts.cooldown "$(DAYS)"
 
+chase: ## Now-playing chaser: similar to the most recent scrobble ([N=5])
+	uv run python -m scripts.chase "$(N)"
+
 .DEFAULT_GOAL := help

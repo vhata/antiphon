@@ -139,6 +139,7 @@ make add-mood NAME='deep work' DESC='Focused coding.'  # scaffold a new mood sec
 make populate-mood NAME='deep work' N=5    # ask Claude (headless) to propose candidates
 make log-rec PICK='Artist — Album' SOURCE='small hours'  # log a rec for cool-down
 make cooldown DAYS=7                       # show recent recs (cool-down list)
+make chase N=5                             # similar to the most recent scrobble (sonic chaser)
 ```
 
 Or directly: `uv run python -m scripts.<name> [args]`.
