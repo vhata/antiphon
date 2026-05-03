@@ -243,6 +243,63 @@ When the user asks for recs:
 5. If they push back ("more obscure", "less metal", "skip anything I've
    already played"), refine and re-query. Don't dump a giant list up front.
 
+## Recommendation modifiers
+
+Dials the user can apply to any recommendation request. They shape
+Claude's selection without needing a separate mode.
+
+### Discovery dial
+
+The user can specify a position on the familiar↔outward axis:
+
+- *familiar* — pick from artists already in the user's top 50.
+- *adjacent* (default) — pick artists 1-2 hops away from the user's
+  centre of gravity.
+- *outward* — pick artists tagged similarly but not in the user's
+  library at all.
+- *wildcard* — deliberately surprising; further than *outward*,
+  sometimes from a tag the user only flirts with.
+
+### Era preference
+
+The user can scope a recommendation to an era: *only pre-1990*, *only
+post-2020*, *the 90s*, etc. Apply as a hard filter when given; ignore
+when the user doesn't mention it.
+
+### Time-of-day defaults
+
+If the user asks for music without naming a mood, infer one from the
+local time:
+
+- 02:00–04:30 → `small hours`
+- 06:30–09:00 → `wake up`
+- 21:00–01:00 → no default (it's evening; many moods possible — ask)
+- otherwise → no default (ask)
+
+An explicit mood name from the user always wins.
+
+### Why-this-rec verbosity
+
+The user can ask for the rationale at three depths:
+
+- *terse* (default) — one sentence per pick, just the load-bearing
+  signal.
+- *paragraph* — 2–3 sentences per pick with the cluster reasoning.
+- *essay* — full breakdown with cross-references to library shape.
+
+### Artist depth
+
+Triggered by phrases like *"deeper into <artist>"* or *"next
+<artist> album to dig"*. Surfaces the artist's canonical albums the
+user has played the LEAST. Use the helper:
+
+```sh
+make depth ARTIST='Pink Floyd'
+```
+
+Then frame the recommendation as *"you've gone deep on X but haven't
+explored Y, which is the canonical Z."*
+
 ## Forgotten-gem mode
 
 A retrieval-oriented variant of recommendation. Triggered when the
