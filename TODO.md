@@ -19,6 +19,29 @@ This file should stay short and honest.
   recent scrobble, suggest something that segues sonically.
 - **Cool-down for past recs** — lightweight session log so I don't
   recommend the same thing twice in nearby sessions.
+- **Apply contractify option-2 hygiene** — add `FEATURES.md` (log the
+  three shipped features as the milestone ledger), scaffold a
+  Layer-2 review skill at `.claude/skills/antiphon-review/SKILL.md`,
+  and append a "Living documents" section to `CLAUDE.md` codifying
+  the commit-by-commit discipline (the rule that surfaced this very
+  TODO entry — *codify before deciding to implement*).
+- **Scaffold Python project for token-saving helper scripts** —
+  `pyproject.toml` (uv, dev-only deps: ruff + mypy + pytest), a
+  *real* `Makefile` with meaningful `install`/`check`/`test`/`format`/
+  `lint`/`typecheck` targets, `scripts/` + `tests/` directories, a
+  shared `scripts/_lastfm.py` for API helpers, gitignore updates for
+  Python caches. CLAUDE.md updated to prefer scripts over inline
+  curl. Crosses the WISHLIST § 4 "becomes software" line deliberately
+  for token-savings reasons; document the choice.
+- **`scripts/profile.py`** — compact listening-shape summary across
+  the four time windows (`overall`, `12month`, `1month`, `7day`) plus
+  recent tracks plus loved. Returns a tight text format instead of
+  raw JSON. Highest single token-saving win — would replace the
+  multi-call curl burst at session start.
+- **`scripts/forgotten_gems.py`** — promote the inline forgotten-gem
+  algorithm (currently a `python3 -c` one-liner) into a real script.
+  Returns top N dormant artists with overall play counts, ready to
+  paste into a recommendation response.
 
 ## Soon
 
