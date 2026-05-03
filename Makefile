@@ -11,6 +11,9 @@ help: ## Show this help
 	@grep -E '^[a-zA-Z][a-zA-Z0-9_-]*:.*?##' $(MAKEFILE_LIST) \
 		| awk -F ':.*?##' '{printf "  \033[1m%-12s\033[0m %s\n", $$1, $$2}'
 
+setup: ## Interactive first-time setup wizard (stdlib-only, no uv needed)
+	python3 scripts/setup.py
+
 install: ## Install dev dependencies via uv
 	uv sync
 

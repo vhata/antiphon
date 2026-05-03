@@ -1,109 +1,75 @@
 # Onboarding
 
-From zero to your first recommendation in a couple of minutes. If
-anything below trips you up, the **Troubleshooting** section near
-the bottom probably covers it.
+From zero to your first recommendation in a couple of minutes. Most
+fork-ers should follow the **Quick path**; the **Manual setup**
+section is the fallback for those who prefer hand-editing files,
+and the **Path B** section covers the OAuth-based alternative.
+
+If anything trips you up, **Troubleshooting** at the bottom probably
+covers it.
 
 ## Prerequisites
 
 - [Claude Code](https://claude.com/claude-code) installed.
-- A last.fm account with a publicly visible listening history.
+- A last.fm account with publicly visible listening history.
 - A terminal you are comfortable using.
-- (Optional, for helper scripts) [uv](https://docs.astral.sh/uv/)
-  for the Python toolchain.
+- Python 3 (any modern version) for the setup wizard.
+- (For the helper scripts) [uv](https://docs.astral.sh/uv/).
 
-## 1. Clone
+## Quick path
 
 ```sh
 git clone https://github.com/vhata/antiphon.git
 cd antiphon
+python3 scripts/setup.py
 ```
 
-## 2. Pick a data-access path
+The wizard prompts for your last.fm username and an API key (link
+shown in-flight; takes about a minute at
+<https://www.last.fm/api/account/create>), then scaffolds four
+gitignored files: `user.md`, `.env`, `moods.md`, `dislikes.md`. It
+is idempotent — re-running skips already-configured steps.
 
-Antiphon needs to read your last.fm history. There are two ways;
-either is fine.
-
-### Path A — self-contained (default)
-
-Free last.fm API key from
-<https://www.last.fm/api/account/create>. Then:
+Then:
 
 ```sh
-cp .env.example .env
-# edit .env and paste your key into LASTFM_API_KEY=
+make install            # uv-managed Python toolchain
+make profile            # verify the last.fm connection works
+claude                  # open the project in Claude Code, then ask:
+                        # "What should I listen to right now?"
 ```
 
-Zero hosted dependencies. Everything runs locally.
+For more of what you can ask, see [`USING.md`](USING.md).
 
-### Path B — hosted MCP
+## Path B — hosted MCP (skip the API key)
 
-Install the lastfm MCP server (one command, OAuth-based, no API
-key needed):
+If you'd rather not register for a last.fm API key, install the
+[lastfm-mcp.com](https://lastfm-mcp.com) MCP server (one command,
+OAuth-based):
 
 ```sh
 claude mcp add --transport http lastfm https://lastfm-mcp.com/mcp
 ```
 
-Sign in with your last.fm account when prompted. Powered by
-[lastfm-mcp.com](https://lastfm-mcp.com) (third-party hosted —
-trades self-containment for setup convenience). Antiphon detects
-the MCP automatically and prefers it when present.
+Sign in with your last.fm account when prompted. Antiphon detects
+the MCP automatically and prefers it when present, so the `.env`
+step in the wizard becomes unnecessary — skip the API-key prompt
+when it appears.
 
-## 3. Configure your identity
+This trades self-containment for setup convenience; the MCP is a
+third-party hosted service.
 
-```sh
-cp user.example.md user.md
-# edit user.md and set your last.fm username
-```
+## Manual setup
 
-You can also add personal listening notes (musical heritage,
-preferences, anything you'd like Claude to weight every session) but
-that's optional and grows over time.
-
-## 4. (Optional) Seed your mood library
+If you'd rather skip the wizard:
 
 ```sh
+cp .env.example .env             # then paste your LASTFM_API_KEY
+cp user.example.md user.md       # then set your last.fm username
 cp moods.example.md moods.md
-```
-
-This becomes your evolving library of mood / context buckets
-("small hours", "deep work", etc.) and the picks you have validated
-against them. You can also leave it for Claude to populate by use.
-
-## 5. (Optional) Install the helper-script toolchain
-
-If you want the `make profile` / `make gems` / `make mood`
-shortcuts that bypass Claude entirely:
-
-```sh
+cp dislikes.example.md dislikes.md
 make install
 ```
-
-This requires uv. If you only want to talk to Claude in the
-directory, you can skip this — Antiphon works without the helpers.
-
-## 6. Open in Claude Code
-
-```sh
-claude
-```
-
-(Or open the directory in your IDE with the Claude Code extension.)
-
-## 7. Ask for your first recommendation
-
-Just ask, in plain English:
-
-> What should I listen to right now?
-
-Claude pulls your real listening history (recent + top across
-multiple time windows + loved tracks), reads its shape, and offers
-recommendations grouped by rationale — each one a clickable Spotify
-search link.
-
-For more of what you can ask, see
-[`USING.md`](USING.md).
 
 ---
 
@@ -123,9 +89,11 @@ case-insensitive and tolerant of either.)
 
 ### `make profile` says *"LASTFM_API_KEY not found in environment or in .env"*
 
-Either `.env` does not exist at the repo root, or it does not contain
-a `LASTFM_API_KEY=` line. Run `cp .env.example .env` and paste your
-key in. The scripts auto-load `.env` — no need to source it manually.
+Either `.env` does not exist at the repo root, or it does not
+contain a `LASTFM_API_KEY=` line with a non-empty value. Run
+`python3 scripts/setup.py` (which will populate `.env` if missing)
+or hand-edit. The scripts auto-load `.env` — no need to source it
+manually.
 
 ### `make` returns *"No rule to make target"*
 
@@ -137,21 +105,28 @@ list of available targets.
 
 - Check `user.md` exists and has the right username.
 - If you chose **Path A**, confirm `LASTFM_API_KEY` is set in your
-  shell (`echo $LASTFM_API_KEY`).
+  `.env` (`grep LASTFM_API_KEY .env`).
 - If you chose **Path B**, run `claude mcp list` to confirm the
   `lastfm` MCP is registered and authenticated.
 
 ### A recommendation came back as a plain URL instead of a clickable link
 
-This is a render-side issue with whichever client you're using —
-Antiphon always emits inline markdown links. If a client renders
-markdown poorly, the link still works as plain text.
+A render-side issue with whichever client you're using — Antiphon
+always emits inline markdown links. If a client renders Markdown
+poorly, the link still works as plain text.
 
-### I want to add my own mood / dislike / etc.
+### I want to add my own mood / dislike
 
-Edit `moods.md` and `dislikes.md` directly, or just tell Claude in
-chat — it will update the files for you. Both are gitignored, so
-your edits stay on your machine.
+Either tell Claude in chat (it will update the files for you), or
+use the helper scripts directly:
+
+```sh
+make add-mood NAME='deep work' DESC='Focused coding.'
+make reject LABEL='Author & Punisher' REASON='too noisy'
+```
+
+See [`USING.md`](USING.md) for the full list of helper-script
+shortcuts.
 
 ---
 
