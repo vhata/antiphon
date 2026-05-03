@@ -17,54 +17,10 @@ This file should stay short and honest.
 
 ## Next
 
-- **`make setup` — interactive NUX wizard for first-time fork-ers**
-  — one command from clone to ready-to-use, minimal manual steps.
-  Concrete flow (`scripts/setup.py`, stdlib-only so it runs before
-  `make install`):
-    1. Greet; list the four files about to be created.
-    2. Prompt for last.fm username; populate `user.md` from
-       `user.example.md`. Skip if `user.md` exists.
-    3. Prompt for last.fm API key (link to the registration URL for
-       those without one); populate `.env` from `.env.example`.
-       Skip if `.env` already has a non-empty `LASTFM_API_KEY`.
-    4. Copy `moods.example.md` → `moods.md` and
-       `dislikes.example.md` → `dislikes.md` (skip each if target
-       exists).
-    5. Print next steps: `make install`, then `make profile` to
-       verify, then open in Claude Code.
-    6. Mention the `lastfm-mcp.com` path (Path B) for those who'd
-       rather skip the API key entirely.
-  Idempotent — re-running is safe. Does NOT shell out to
-  `claude mcp add` (manual step), does NOT auto-install uv
-  (chicken-and-egg). After this ships, `ONBOARDING.md` reorganises
-  around `make setup` with the manual steps becoming the fallback.
 - **Now-playing chaser** — a `/next`-style request: pull the most
   recent scrobble, suggest something that segues sonically.
 - **Cool-down for past recs** — lightweight session log so I don't
   recommend the same thing twice in nearby sessions.
-- **`make add-mood NAME='...'`** — append a new mood section to
-  `moods.md` with the standard scaffold: italic description
-  placeholder, "picks should..." paragraph, empty `### Validated`
-  with `*(none yet)*`, empty `### Candidates` with `*(none yet)*`.
-  Inserts above the meta `## Adding a new mood` section. Refuses
-  if a mood with the same name already exists.
-  Mechanical scaffold is the script; filling in the description and
-  candidate picks is either hand-editing or chat with Claude. Pairs
-  with the existing `make validate MOOD=... PICK=...` (promote
-  candidate → validated) so the mood lifecycle is fully scriptable
-  end-to-end.
-- **Consolidate Markdown parsers into shared modules** — `mood.py`,
-  `validate.py`, and the upcoming `add-mood.py` each parse
-  `moods.md` with their own private regex; same pattern for
-  `reject.py` against `dislikes.md`. Extract into
-  `scripts/_moods.py` and `scripts/_dislikes.py` with one canonical
-  implementation per file: find a section, split bullets, parse a
-  candidate, render a section. Existing scripts re-import; their
-  per-script tests shrink as the parser tests move into the new
-  modules. Reduces parsing-bug surface to one place and lets every
-  future script (`add-mood`, `add-candidate`, etc.) lean on it for
-  free. Should land *before* `add-mood.py` so the new script can
-  use the consolidated parser from day one.
 
 ## Soon
 

@@ -25,12 +25,26 @@ Legend: ✓ shipped · ⋯ in progress
   last.fm API that emit compact text instead of raw JSON. Auto-load
   `.env` so no shell preamble is needed.
 - ✓ **Helper scripts — state editors** (`scripts/mood.py`,
-  `scripts/reject.py`, `scripts/validate.py`; `make mood NAME='...'` /
-  `make reject LABEL='X' REASON='Y' [CATEGORY='...']` /
-  `make validate MOOD='X' PICK='Y'`) — read `moods.md` for the named
-  mood and emit Spotify links; append a rejection to `dislikes.md`;
-  promote a candidate to validated under a mood. No API key needed;
-  pure file edits.
+  `scripts/reject.py`, `scripts/validate.py`, `scripts/add_mood.py`;
+  `make mood NAME='...'` / `make reject LABEL='X' REASON='Y'
+  [CATEGORY='...']` / `make validate MOOD='X' PICK='Y'` /
+  `make add-mood NAME='X' DESC='Y'`) — render a mood as Spotify
+  links, append a rejection, promote a candidate to validated, or
+  scaffold a new mood section. No API key needed; pure file edits
+  via the shared `_moods` / `_dislikes` parser modules.
+- ✓ **First-time setup wizard** (`scripts/setup.py`; `make setup`,
+  or `python3 scripts/setup.py` before uv is installed) — interactive
+  walkthrough that scaffolds `user.md`, `.env`, `moods.md`, and
+  `dislikes.md` from their `.example` templates with two prompts
+  (last.fm username and API key). Idempotent; skips already-configured
+  steps. ONBOARDING reorganised around it as the Quick path with
+  manual setup as fallback.
+- ✓ **Shared Markdown parser modules** (`scripts/_moods.py`,
+  `scripts/_dislikes.py`) — single source of truth for parsing and
+  mutating `moods.md` and `dislikes.md`. Every script that touches
+  those files imports here rather than re-implementing the regex.
+  Internal API but user-visible benefit is consistency: edits done
+  by one script land the same way as edits done by another.
 - ✓ **Text-first state hierarchy** (`CLAUDE.md` § Where state lives) —
   Markdown for human-curated state, JSON when text gets awkward (none
   yet), SQLite on the becomes-software side of `WISHLIST.md` § 4 and
