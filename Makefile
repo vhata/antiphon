@@ -96,6 +96,13 @@ add-mood: ## Add a new mood scaffold (NAME='X' [DESC='Y']  or  positional)
 		exit 64; \
 	fi
 
+add-candidate: ## Append one candidate to a mood (MOOD='X' ARTIST='Y' ALBUM='Z' [YEAR=N] [WHY='W'])
+	@if [ -z "$(MOOD)" ] || [ -z "$(ARTIST)" ] || [ -z "$(ALBUM)" ]; then \
+		echo "usage: make add-candidate MOOD='<mood>' ARTIST='<artist>' ALBUM='<album>' [YEAR=<n>] [WHY='<rationale>']"; \
+		exit 64; \
+	fi; \
+	uv run python -m scripts.add_candidate "$(MOOD)" "$(ARTIST)" "$(ALBUM)" "$(YEAR)" "$(WHY)"
+
 populate-mood: ## Use Claude to propose candidates for a mood (NAME='X' [N=5])
 	@_name="$(or $(NAME),$(firstword $(POSITIONAL_ARGS)))"; \
 	if [ -z "$$_name" ]; then \

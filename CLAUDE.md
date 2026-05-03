@@ -136,6 +136,7 @@ make mood NAME='small hours'              # picks for a mood as Spotify search l
 make reject LABEL='X' REASON='Y' [CATEGORY='Artists']  # append to dislikes.md
 make validate MOOD='small hours' PICK='Stars of the Lid'  # promote candidate → validated
 make add-mood NAME='deep work' DESC='Focused coding.'  # scaffold a new mood section
+make add-candidate MOOD='feisty' ARTIST='X' ALBUM='Y' YEAR=2024 WHY='...'  # append one candidate
 make populate-mood NAME='deep work' N=5    # ask Claude (headless) to propose candidates
 make log-rec PICK='Artist — Album' SOURCE='small hours'  # log a rec for cool-down
 make cooldown DAYS=7                       # show recent recs (cool-down list)
