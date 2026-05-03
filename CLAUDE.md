@@ -175,6 +175,35 @@ always be artists already in the user's library.
 - Prefer one wide call (`limit=200`) over many paginated ones when you
   need breadth.
 
+## Living documents
+
+These three documents update *in the same commit as the change they
+describe*. A commit that ships a user-observable change without
+touching the relevant document is a bug to be amended.
+
+- **`README.md`** — what Antiphon is and how to use it. Update when
+  user-observable behaviour changes.
+- **`FEATURES.md`** — feature ledger, one line per shipped feature.
+  Update when a feature ships or moves status.
+- **`TODO.md`** — concrete near-term work. Update on add, completion,
+  or abandonment (move to `Shipped`).
+
+`WISHLIST.md`, this file (`CLAUDE.md`), and the data files (`user.md`,
+`moods.md`, `dislikes.md`) update when their scope shifts, not
+commit-by-commit.
+
+### Codify new ideas in TODO.md before deciding to implement
+
+When a new feature, polish item, or design idea surfaces in
+conversation — whether the user proposed it or Claude did — the
+immediate move is to write it into `TODO.md` with the rationale
+captured at idea-time. *Then*, separately, decide whether to pull it
+forward now or leave it. The default is "codify, then defer"; pulling
+an entry forward is a second decision the user makes deliberately. Do
+not ask "should we build this now?" without writing it down first —
+ideas evaporate, and the in-conversation tradeoff analysis is the
+most valuable part to preserve.
+
 ## Working in this repo
 
 After any meaningful edit to a tracked file, make a commit as part of
