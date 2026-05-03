@@ -136,6 +136,7 @@ make mood NAME='small hours'              # picks for a mood as Spotify search l
 make reject LABEL='X' REASON='Y' [CATEGORY='Artists']  # append to dislikes.md
 make validate MOOD='small hours' PICK='Stars of the Lid'  # promote candidate → validated
 make add-mood NAME='deep work' DESC='Focused coding.'  # scaffold a new mood section
+make populate-mood NAME='deep work' N=5    # ask Claude (headless) to propose candidates
 ```
 
 Or directly: `uv run python -m scripts.<name> [args]`.

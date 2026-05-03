@@ -54,6 +54,7 @@ After `make install` (uv-managed Python deps):
 | `make reject LABEL='X' REASON='Y' [CATEGORY='Artists']`           | Append to `dislikes.md` under a category.                     |
 | `make validate MOOD='small hours' PICK='Stars of the Lid'`        | Promote a candidate bullet to validated under a mood.         |
 | `make add-mood NAME='deep work' DESC='Focused coding.'`           | Scaffold a new mood section in `moods.md`.                    |
+| `make populate-mood NAME='deep work' N=5`                         | Ask Claude (headless `claude -p`) to propose mood candidates. |
 
 Or run any of them directly: `uv run python -m scripts.<name> [args]`.
 

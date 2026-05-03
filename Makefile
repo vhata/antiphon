@@ -16,7 +16,7 @@
 # (which Make sees as separate goals after shell quoting) don't blow up
 # with "No rule to make target ...". Pattern rules don't shadow
 # explicit rules, so this is safe for the targets we know about.
-ARG_TAKING_TARGETS := mood add-mood similar
+ARG_TAKING_TARGETS := mood add-mood populate-mood similar
 ifneq ($(filter $(ARG_TAKING_TARGETS),$(firstword $(MAKECMDGOALS))),)
   POSITIONAL_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
   %:
@@ -95,6 +95,15 @@ add-mood: ## Add a new mood scaffold (NAME='X' [DESC='Y']  or  positional)
 		echo "   or: make add-mood <name> [<description...>]"; \
 		exit 64; \
 	fi
+
+populate-mood: ## Use Claude to propose candidates for a mood (NAME='X' [N=5])
+	@_name="$(or $(NAME),$(firstword $(POSITIONAL_ARGS)))"; \
+	if [ -z "$$_name" ]; then \
+		echo "usage: make populate-mood NAME='<mood>' [N=5]"; \
+		echo "   or: make populate-mood <mood> [N]"; \
+		exit 64; \
+	fi; \
+	uv run python -m scripts.populate_mood "$$_name" "$(N)"
 
 recent: ## Last N days of scrobbles ([N=7])
 	uv run python -m scripts.recent "$(N)"
