@@ -137,6 +137,8 @@ make reject LABEL='X' REASON='Y' [CATEGORY='Artists']  # append to dislikes.md
 make validate MOOD='small hours' PICK='Stars of the Lid'  # promote candidate → validated
 make add-mood NAME='deep work' DESC='Focused coding.'  # scaffold a new mood section
 make populate-mood NAME='deep work' N=5    # ask Claude (headless) to propose candidates
+make log-rec PICK='Artist — Album' SOURCE='small hours'  # log a rec for cool-down
+make cooldown DAYS=7                       # show recent recs (cool-down list)
 ```
 
 Or directly: `uv run python -m scripts.<name> [args]`.
@@ -179,6 +181,25 @@ When the user rejects a pick mid-session ("not that", "skip anything
 like X", "I hate jam-band noodling"), append to `dislikes.md`
 immediately — don't wait to be asked. Always include a one-line
 reason; reasons let you judge edge cases later.
+
+## Cool-down for past recs
+
+`session.log.md` (gitignored) is an append-only log of every
+recommendation made. The cool-down convention: do not re-recommend
+anything from the last 7 days unless the user specifically asks for
+it.
+
+**At session start**, run `make cooldown` to see the cool-down list.
+Filter against it as hard as `dislikes.md`.
+
+**After each recommendation**, append the pick via `make log-rec
+PICK='Artist — Album' SOURCE='<mood-or-mode>'`. Source is the mood
+name if mood-driven, or the mode (`forgotten gems`, `chase`, etc.)
+otherwise. The script de-dupes within a single day.
+
+This replaced the manual hold previously kept in
+`~/.claude/projects/.../memory/`. The script-based approach is
+mechanical and consistent.
 
 ## Spotify links
 

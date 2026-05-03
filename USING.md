@@ -55,6 +55,8 @@ After `make install` (uv-managed Python deps):
 | `make validate MOOD='small hours' PICK='Stars of the Lid'`        | Promote a candidate bullet to validated under a mood.         |
 | `make add-mood NAME='deep work' DESC='Focused coding.'`           | Scaffold a new mood section in `moods.md`.                    |
 | `make populate-mood NAME='deep work' N=5`                         | Ask Claude (headless `claude -p`) to propose mood candidates. |
+| `make log-rec PICK='Artist — Album' SOURCE='<mood>'`              | Log a recommendation to `session.log.md` (cool-down basis).   |
+| `make cooldown DAYS=7`                                            | Show recommendations from the last N days.                    |
 
 Or run any of them directly: `uv run python -m scripts.<name> [args]`.
 

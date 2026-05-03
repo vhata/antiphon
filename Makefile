@@ -119,4 +119,14 @@ similar: ## Similar artists w/ library overlap (ARTIST='X' [N=20])
 stats: ## Library coverage diagnostic
 	uv run python -m scripts.stats
 
+log-rec: ## Log a rec to session.log.md (PICK='Artist — Album' [SOURCE='mood'])
+	@if [ -z "$(PICK)" ]; then \
+		echo "usage: make log-rec PICK='<artist — album>' [SOURCE='<mood-or-mode>']"; \
+		exit 64; \
+	fi; \
+	uv run python -m scripts.log_rec "$(PICK)" "$(SOURCE)"
+
+cooldown: ## Show recs from the last N days ([DAYS=7])
+	uv run python -m scripts.cooldown "$(DAYS)"
+
 .DEFAULT_GOAL := help
