@@ -74,6 +74,11 @@ Legend: ✓ shipped · ⋯ in progress
   so re-running returns the same pick. Strategy rotates by
   day-of-year through five corners (`comfort`, `forgotten`, `gap`,
   `loved`, `tag-walk`) so the daily ritual stays varied.
+- ✓ **Album-deep mode** (`CLAUDE.md` § Album-deep mode) — pure
+  conversational convention, no script. Triggered by *"sit with me
+  through <album>"* / *"liner notes for <album>"*; produces
+  track-by-track notes for an album the listener is about to play.
+  Distinct from `depth`, which is about what to play *next*.
 - ✓ **Shared Markdown parser modules** (`scripts/_moods.py`,
   `scripts/_dislikes.py`) — single source of truth for parsing and
   mutating `moods.md` and `dislikes.md`. Every script that touches

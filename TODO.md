@@ -23,12 +23,6 @@ This file should stay short and honest.
   Heavy on the LLM-narration side. Useful as a periodic check-in.
   Larger scope than daily; build only when a real period boundary
   approaches.
-- **Album-deep mode** — pure Claude convention in `CLAUDE.md`, no
-  script. Sit with one album for the duration of a listen and
-  produce track-by-track liner notes as it plays. Different from
-  `depth` (which suggests what to play next); this is about
-  listening *into* a record. Triggered by phrases like *"sit with
-  me through X"* or *"liner notes for X"*.
 
 ## Soon
 

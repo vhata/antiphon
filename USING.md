@@ -28,6 +28,8 @@ and ask in plain English:
   picks Spotify's algorithm would surface.
 - *"Read my library back to me."* — a prose portrait of your taste,
   grounded in actual play counts and ranks.
+- *"Sit with me through Kid A."* — album-deep mode: track-by-track
+  liner notes for a record you're about to listen to.
 
 Recommendations come back as inline markdown links to Spotify
 searches. Click through to play.

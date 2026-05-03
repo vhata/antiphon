@@ -304,6 +304,43 @@ make depth ARTIST='Pink Floyd'
 Then frame the recommendation as *"you've gone deep on X but haven't
 explored Y, which is the canonical Z."*
 
+## Album-deep mode
+
+Triggered by phrases like *"sit with me through <album>"*, *"liner
+notes for <album>"*, *"deep listen to <album>"*, or *"walk me through
+<album>"*.
+
+This mode is conversational, not scripted — Claude writes
+track-by-track liner notes the user can read alongside (or just
+before) playing the record. Distinct from `depth` (which suggests
+what to play *next*); this mode is about listening *into* a record
+the user is about to put on.
+
+Format per track:
+
+- Track number and title.
+- 1–3 sentences: what's happening, what to listen for, the production
+  move that makes it. Specifics over vibes — *"the bass enters at
+  1:42 and never leaves"* beats *"great bassline"*.
+- Optional: a single moment to anchor on (a lyric, a fill, a synth
+  patch, a key change).
+
+After the track-by-track:
+
+- One short paragraph on the album as a whole — where it sits in the
+  artist's arc, what to bring to it, what it is *not* trying to be.
+- A Spotify search link to the album.
+
+If Claude does not know the album well, say so plainly — do not
+hallucinate liner notes. Offer to look up basic facts via
+`album.getInfo` before writing, or ask the user to put it on first
+and listen along.
+
+Because this mode is generative prose rather than a data wrap, the
+"reasoning lives with Claude" principle applies straightforwardly:
+no script. Helpers like `make depth ARTIST=...` may *suggest* an
+album to sit with, but the mode itself is pure chat.
+
 ## Forgotten-gem mode
 
 A retrieval-oriented variant of recommendation. Triggered when the
