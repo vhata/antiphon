@@ -59,6 +59,7 @@ After `make install` (uv-managed Python deps):
 | `make cooldown DAYS=7`                                            | Show recommendations from the last N days.                    |
 | `make chase N=5`                                                  | Now-playing chaser: similar tracks to your latest scrobble.   |
 | `make depth ARTIST='Pink Floyd'`                                  | Artist depth check: which canonical albums you've under-played. |
+| `make rut DAYS=14`                                                | Detect listening rut: top-1 / top-2 concentration check.      |
 
 Or run any of them directly: `uv run python -m scripts.<name> [args]`.
 

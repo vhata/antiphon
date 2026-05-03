@@ -21,8 +21,7 @@ This file should stay short and honest.
 
 ## Soon
 
-- **Rut detector** — when 1–2 artists dominate ≥40% of plays for ≥2
-  weeks, flag and offer either a deeper dive or a deliberate detour.
+*(none — see `WISHLIST.md` for the broader design space)*
 
 ## Maybe
 

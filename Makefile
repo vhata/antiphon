@@ -132,6 +132,9 @@ cooldown: ## Show recs from the last N days ([DAYS=7])
 chase: ## Now-playing chaser: similar to the most recent scrobble ([N=5])
 	uv run python -m scripts.chase "$(N)"
 
+rut: ## Rut detector: top-artist concentration in last N days ([DAYS=14])
+	uv run python -m scripts.rut "$(DAYS)"
+
 depth: ## Artist depth check (ARTIST='X' or positional)
 	@_artist="$(or $(ARTIST),$(POSITIONAL_ARGS))"; \
 	if [ -z "$$_artist" ]; then \

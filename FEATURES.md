@@ -64,6 +64,11 @@ Legend: ✓ shipped · ⋯ in progress
   (familiar / adjacent / outward / wildcard), era preference,
   time-of-day defaults, why-this-rec verbosity, artist depth.
   Convention-only; no scripts beyond `make depth`.
+- ✓ **Rut detector** (`scripts/rut.py`; `make rut [DAYS=14]`) —
+  computes top-1 and top-2 artist concentration over the last N
+  days. Flags as a rut when top-1 ≥ 40% or top-2 ≥ 60% of plays
+  (sample-size-aware), and surfaces *lean in* (depth into the top
+  artist) vs *lean out* (forgotten gems) options.
 - ✓ **Shared Markdown parser modules** (`scripts/_moods.py`,
   `scripts/_dislikes.py`) — single source of truth for parsing and
   mutating `moods.md` and `dislikes.md`. Every script that touches
