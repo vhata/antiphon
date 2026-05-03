@@ -103,7 +103,7 @@ recommendations grouped by rationale — each one a clickable Spotify
 search link.
 
 For more of what you can ask, see
-[`HIGHLIGHTS.md`](HIGHLIGHTS.md).
+[`USING.md`](USING.md).
 
 ---
 
@@ -162,7 +162,7 @@ your edits stay on your machine.
 
 ## Where to next
 
-- [`HIGHLIGHTS.md`](HIGHLIGHTS.md) — what you can actually do.
+- [`USING.md`](USING.md) — what to type to get music.
 - [`FEATURES.md`](FEATURES.md) — what's shipped.
 - [`TODO.md`](TODO.md) — what's planned next.
 - [`WISHLIST.md`](WISHLIST.md) — the full design space, including

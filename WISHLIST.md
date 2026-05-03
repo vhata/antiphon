@@ -127,7 +127,15 @@ A backlog. Each becomes its own bucket in `moods.md` with seeds + candidates, on
 
 ## 4. The "becomes software" line
 
-Right now the project has zero application code — `CLAUDE.md` + `moods.md` is the whole product, and Claude is the engine. These items would each push it across that line:
+### Why there is no UI
+
+The chat interface *is* the UI. Every recommendation comes through conversation; every mood is invoked by name; every rejection is logged by telling Claude to filter against it in future sessions. Building a traditional UI — a webpage, a CLI, a mobile app — would cross the line into "real software" and lose the property that makes Antiphon different from every other music recommender.
+
+The two middle-ground extensions in the list below (**iOS Shortcut**, **MCP server**) could meet ergonomics without breaking that philosophy: a one-tap home-screen prompt, or a way for other AI clients to query Antiphon. Neither is built. Both are deliberately on the to-do-but-not-yet pile.
+
+### What would push us over
+
+Right now the project has near-zero application code — `CLAUDE.md` + `moods.md` is the brain, and a few Python helpers wrap the data layer. The items below would each push it further across the line, and each is held back deliberately:
 
 - **Local scrobble cache (SQLite)** — pull all-time scrobbles once, then incremental updates. Avoids repeated full-library API calls and unlocks proper analytics.
 - **Scheduled jobs** — cron / launchd / GitHub Actions: nightly pull, weekly digest, monthly retrospective.
