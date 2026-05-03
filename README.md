@@ -6,18 +6,22 @@ No recommendation logic in code — a handful of `.md` files turn
 [Claude Code](https://claude.com/claude-code) into a music agent
 that reads your real last.fm history every session and recommends
 music grounded in what you actually listen to, not what an
-algorithm thinks you should. A few short Python helpers wrap the
-data layer for token efficiency, not intelligence; the reasoning
-stays with Claude.
+algorithm thinks you should. A small set of Python helpers wrap the
+data layer (last.fm API → compact text) for token efficiency. One
+helper (`make populate-mood`) deliberately invokes Claude headless
+to seed mood candidates on demand; everything else keeps the
+reasoning in chat.
 
 > *An antiphon is a sung response — a call answered with a
 > counter-call. You ask; the library answers.*
 
 ## Design properties
 
-- **Local-only.** Your listening data is read from last.fm during a
+- **Local-first.** Your listening data is read from last.fm during a
   session and used to produce recommendations on the spot. Nothing
-  is cached, logged, or forwarded.
+  is cached or logged on disk. The single exception is `make
+  populate-mood`, which sends mood context to Claude headless when
+  you explicitly invoke it.
 - **Markdown is the architecture.** Antiphon stays in Markdown form
   for as long as it can. The line at which it would graduate to
   real software is documented in [`WISHLIST.md`](WISHLIST.md) § 4.
