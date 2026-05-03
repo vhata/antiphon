@@ -74,6 +74,7 @@ above are the only ones that hold your data.
 - *"What did I love this time last year?"* — Time-travel mode against
   your scrobble history.
 
+For a quick capability tour see [`HIGHLIGHTS.md`](HIGHLIGHTS.md).
 Concrete near-term work lives in [`TODO.md`](TODO.md). The full,
 sometimes-unhinged design space is catalogued in [`WISHLIST.md`](WISHLIST.md).
 
@@ -123,6 +124,7 @@ cannot do.
 | `CLAUDE.md`         | ✓       | Operating instructions for Claude.                     |
 | `README.md`         | ✓       | This file.                                             |
 | `LICENSE`           | ✓       | MIT.                                                   |
+| `HIGHLIGHTS.md`     | ✓       | Quick tour of what Antiphon can actually do.           |
 | `TODO.md`           | ✓       | Concrete near-term work.                               |
 | `WISHLIST.md`       | ✓       | Full design space, including the unhinged.             |
 | `user.example.md`   | ✓       | Template for personal config.                          |
