@@ -19,29 +19,6 @@ This file should stay short and honest.
   recent scrobble, suggest something that segues sonically.
 - **Cool-down for past recs** — lightweight session log so I don't
   recommend the same thing twice in nearby sessions.
-- **Apply contractify option-2 hygiene** — add `FEATURES.md` (log the
-  three shipped features as the milestone ledger), scaffold a
-  Layer-2 review skill at `.claude/skills/antiphon-review/SKILL.md`,
-  and append a "Living documents" section to `CLAUDE.md` codifying
-  the commit-by-commit discipline (the rule that surfaced this very
-  TODO entry — *codify before deciding to implement*).
-- **Scaffold Python project for token-saving helper scripts** —
-  `pyproject.toml` (uv, dev-only deps: ruff + mypy + pytest), a
-  *real* `Makefile` with meaningful `install`/`check`/`test`/`format`/
-  `lint`/`typecheck` targets, `scripts/` + `tests/` directories, a
-  shared `scripts/_lastfm.py` for API helpers, gitignore updates for
-  Python caches. CLAUDE.md updated to prefer scripts over inline
-  curl. Crosses the WISHLIST § 4 "becomes software" line deliberately
-  for token-savings reasons; document the choice.
-- **`scripts/profile.py`** — compact listening-shape summary across
-  the four time windows (`overall`, `12month`, `1month`, `7day`) plus
-  recent tracks plus loved. Returns a tight text format instead of
-  raw JSON. Highest single token-saving win — would replace the
-  multi-call curl burst at session start.
-- **`scripts/forgotten_gems.py`** — promote the inline forgotten-gem
-  algorithm (currently a `python3 -c` one-liner) into a real script.
-  Returns top N dormant artists with overall play counts, ready to
-  paste into a recommendation response.
 
 ## Soon
 
@@ -80,3 +57,25 @@ This file should stay short and honest.
   prefers them when present, falling back to direct curl + API key
   otherwise. Method-mapping table in `CLAUDE.md` keeps the two paths
   in sync.
+- **Contractify option-2 hygiene** — `FEATURES.md` ledger,
+  `.claude/skills/antiphon-review/SKILL.md` Layer-2 review skill,
+  and a "Living documents" section in `CLAUDE.md` (with the
+  codify-before-deciding-to-implement rule). The Markdown-only
+  subset of the contractify skill, deliberately skipping the
+  Makefile / hooks / CI that don't fit a no-application-code project.
+- **Python scaffolding for helper scripts** — `pyproject.toml` (uv,
+  dev-only: ruff + mypy + pytest, `package = false`), a real
+  `Makefile` with `install`/`check`/`format`/`lint`/`typecheck`/
+  `test` plus project-specific `profile`/`gems` targets, `scripts/`
+  + `tests/` directories with shared `scripts/_lastfm.py`, gitignore
+  updates. Deliberate, narrow crossing of WISHLIST § 4's
+  "becomes software" line, scoped to the helper scripts.
+- **`scripts/profile.py`** — compact listening-shape summary across
+  the four time windows + recent + loved. Run via `make profile`.
+  Replaces the multi-call inline curl burst that previously consumed
+  significant context at session start.
+- **`scripts/forgotten_gems.py`** — promotes the previously-inline
+  forgotten-gem algorithm into a script. Run via `make gems` (or
+  `uv run python -m scripts.forgotten_gems N` for a specific count).
+  CLAUDE.md § Forgotten-gem mode now points at the script rather
+  than describing the algorithm inline.

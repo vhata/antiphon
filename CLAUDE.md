@@ -89,9 +89,10 @@ Run via `make` targets after sourcing `.env`:
 ```sh
 set -a; source .env; set +a
 make profile      # listening-shape summary across 4 time windows + loved
+make gems         # dormant artists in the overall top 100-500 (forgotten-gem mode)
 ```
 
-Or directly: `uv run python -m scripts.profile`.
+Or directly: `uv run python -m scripts.profile`, etc.
 
 Scripts use the self-contained data-access path (`.env` + curl); they
 do not have access to the MCP tools, which are session-only. The
@@ -173,19 +174,18 @@ A retrieval-oriented variant of recommendation. Triggered when the
 user asks for "forgotten gems", "what did I used to love", "surface
 something I've forgotten", or similar.
 
-Algorithm:
+Implementation: `scripts/forgotten_gems.py` (run via `make gems`, or
+`uv run python -m scripts.forgotten_gems N` for a specific count). The
+script identifies artists in the user's overall top 100–500 who do
+*not* appear in the 12-month top 200 — the *dormant set*, once
+well-loved but not played in the last year — and prints the top N by
+overall play count.
 
-1. Pull `user.getTopArtists` with `period=overall&limit=500`.
-2. Pull `user.getTopArtists` with `period=12month&limit=200`.
-3. The *dormant set* is artists in the overall top 100–500 that do
-   NOT appear in the 12-month list — they were once well-loved but
-   haven't been played in the last year.
-4. Pick 3–5 from the dormant set, biased toward higher overall play
-   counts, and surface them framed as "you played {artist} {N} times
-   overall but haven't touched them this year".
-5. For each, suggest a specific entry-point — usually their album
-   most represented in the user's history (call `user.getTopAlbums`
-   for the artist if needed) or a canonical record.
+When surfacing the picks to the user, frame each as "you played
+{artist} {N} times overall but haven't touched them this year." For
+each, suggest a specific entry-point — usually the artist's album
+most represented in the user's history (call `user.getTopAlbums` for
+the artist if needed) or a canonical record.
 
 The point of this mode is **retrieval, not discovery** — bring back
 what has gone dormant; do not introduce something new. Picks should
