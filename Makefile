@@ -43,4 +43,10 @@ gems: ## Print forgotten gems (needs .env loaded)
 mood: ## Print a mood's picks as Spotify links (NAME='small hours')
 	uv run python -m scripts.mood "$(NAME)"
 
+reject: ## Append to dislikes.md (LABEL='X' REASON='Y' [CATEGORY='Artists'])
+	uv run python -m scripts.reject "$(LABEL)" "$(REASON)" "$(CATEGORY)"
+
+validate: ## Promote a candidate to validated (MOOD='X' PICK='Y')
+	uv run python -m scripts.validate "$(MOOD)" "$(PICK)"
+
 .DEFAULT_GOAL := help
