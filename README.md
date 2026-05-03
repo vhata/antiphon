@@ -32,17 +32,30 @@ is cached on disk; every session starts fresh from your most recent data.
 ## Setup
 
 1. Clone this repository.
-2. Get a free last.fm API key at <https://www.last.fm/api/account/create>.
-3. Configure your environment:
+2. Pick a data-access path (one of):
+
+   **A. Self-contained.** Get a free last.fm API key at
+   <https://www.last.fm/api/account/create>, then `cp .env.example .env`
+   and paste it into the new file. Zero hosted dependencies.
+
+   **B. Hosted MCP.** Install the lastfm MCP server — one command,
+   OAuth-based, no API key:
    ```bash
-   cp .env.example .env             # then add your LASTFM_API_KEY
+   claude mcp add --transport http lastfm https://lastfm-mcp.com/mcp
+   ```
+   Sign in with your last.fm account when prompted. Powered by
+   [lastfm-mcp.com](https://lastfm-mcp.com) (third-party hosted; trades
+   self-containment for setup convenience). Antiphon detects the MCP
+   automatically and prefers it when present.
+3. Configure your identity and (optionally) your mood library:
+   ```bash
    cp user.example.md user.md       # then add your last.fm username
    cp moods.example.md moods.md     # this becomes your living mood library
    ```
 4. Open the directory in [Claude Code](https://claude.com/claude-code).
 5. Ask for a recommendation.
 
-You should not need to edit `CLAUDE.md` to use Antiphon. The three files
+You should not need to edit `CLAUDE.md` to use Antiphon. The files
 above are the only ones that hold your data.
 
 ## Examples

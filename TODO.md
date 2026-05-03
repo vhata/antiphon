@@ -19,13 +19,6 @@ This file should stay short and honest.
   recent scrobble, suggest something that segues sonically.
 - **Cool-down for past recs** — lightweight session log so I don't
   recommend the same thing twice in nearby sessions.
-- **Optional last.fm MCP integration** — wire up support for
-  [lastfm-mcp.com](https://lastfm-mcp.com) (Rian van der Merwe's
-  hosted MCP) as an alternative to the current `.env`-API-key
-  path. Fork-ers pick: `.env` for self-contained, MCP for lazy
-  setup with OAuth. Document both in README; detect at session
-  start which path is active. Real tradeoff is the new dependency
-  on a hosted third-party service, so default stays self-contained.
 
 ## Soon
 
@@ -57,3 +50,10 @@ This file should stay short and honest.
 - **Anti-rec list** — `dislikes.md` (gitignored) + `dislikes.example.md`
   template, with the read/filter/append rule wired into `CLAUDE.md`.
   Rejected picks are now persistent across sessions.
+- **Optional last.fm MCP integration** — `CLAUDE.md` and `README.md`
+  now document two data-access paths: self-contained `.env` API key
+  (default), or [lastfm-mcp.com](https://lastfm-mcp.com) via OAuth.
+  Antiphon detects MCP tools (`mcp__lastfm__*`) at session start and
+  prefers them when present, falling back to direct curl + API key
+  otherwise. Method-mapping table in `CLAUDE.md` keeps the two paths
+  in sync.
