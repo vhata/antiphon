@@ -45,6 +45,25 @@ Legend: ✓ shipped · ⋯ in progress
   wrapping data; prompt includes the mood's description and the
   listener's top-artists across four time windows. Picks appended via
   the shared `_moods.replace_subsection_body`.
+- ✓ **Now-playing chaser** (`scripts/chase.py`; `make chase [N=5]`) —
+  pulls the listener's most recent scrobble and suggests sonically
+  compatible follow-ups via `track.getSimilar` (with `artist.getSimilar`
+  fallback). Filters against the cool-down log.
+- ✓ **Cool-down for past recs** (`scripts/log_rec.py`,
+  `scripts/cooldown.py`; `make log-rec` and `make cooldown`) —
+  append-only log of recommendations in `session.log.md` (gitignored).
+  Codified read/append convention in `CLAUDE.md`. Retires the
+  manual hold previously kept in the assistant's memory store.
+- ✓ **Artist depth check** (`scripts/depth.py`; `make depth ARTIST='X'`)
+  — given an artist, lists their globally-top albums alongside the
+  listener's playcount per album, with a `GAP` marker on canonical
+  records the listener has never touched. Drives the artist-depth
+  recommendation modifier.
+- ✓ **Recommendation modifiers in `CLAUDE.md`** — codified five
+  prompt-shaping conventions Claude applies in chat: discovery dial
+  (familiar / adjacent / outward / wildcard), era preference,
+  time-of-day defaults, why-this-rec verbosity, artist depth.
+  Convention-only; no scripts beyond `make depth`.
 - ✓ **Shared Markdown parser modules** (`scripts/_moods.py`,
   `scripts/_dislikes.py`) — single source of truth for parsing and
   mutating `moods.md` and `dislikes.md`. Every script that touches

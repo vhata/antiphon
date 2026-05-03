@@ -13,45 +13,28 @@ This file should stay short and honest.
 
 ## In flight
 
-*(nothing in flight — pick from `Next` to start)*
+*(nothing in flight — pick from `Next` or `Soon` to start)*
 
 ## Next
 
-- **Now-playing chaser** — a `/next`-style request: pull the most
-  recent scrobble, suggest something that segues sonically.
-- **Cool-down for past recs** — lightweight session log so I don't
-  recommend the same thing twice in nearby sessions.
+*(none — Soon has the next reasonable batch when the user wants more)*
 
 ## Soon
 
-- **Time-of-day defaults** — at 02:30 default to `small hours`, at
-  09:00 default to a morning mood (TBD which one).
-- **Discovery dial** — per-request: `familiar` / `adjacent` / `outward`
-  / `wildcard`.
-- **Era preference dial** — per-request, optional: only pre-1990,
-  only post-2020, no preference.
-- **Artist-depth mode** — "give me the next album to dig into for
-  {existing artist}". High-leverage for the heavy-rotation names.
-- **Library-coverage stat** — one-liner on request: "X unique
-  artists, Y% of plays from your top 5, here's where the long tail
-  starts."
+- **Rut detector** — when 1–2 artists dominate ≥40% of plays for ≥2
+  weeks, flag and offer either a deeper dive or a deliberate detour.
 
 ## Maybe
 
-- **Rut detector** — when 1–2 artists dominate ≥40% of plays for ≥2
-  weeks, flag and offer either deeper dive or deliberate detour.
 - **Spotify Web API (Client Credentials)** — direct track URIs
   instead of search URLs. ~10 minutes of setup to register an app.
-- **`why this rec?` verbosity setting** — terse / paragraph / essay.
 - **Held in reserve: YAML frontmatter for structured Markdown** —
   the established Markdown-meets-structure pattern (Hugo / Jekyll /
-  MDX). If the shared-parser approach above hits a real wall — a
-  parsing case that conventions cannot rescue — migrate each `##`
-  section in `moods.md` and `dislikes.md` to carry a 3-line YAML
-  frontmatter block (name, type, brief description) with prose
-  underneath. Adds the `pyyaml` dep. Migration is mechanical
-  (one-time script). Parser becomes `yaml.safe_load` rather than
-  regex. **Do not pull forward** until the shared-parser approach
-  visibly fails — format changes are larger than they look in the
-  abstract.
-
+  MDX). If the shared-parser approach hits a real wall — a parsing
+  case that conventions cannot rescue — migrate each `##` section in
+  `moods.md` and `dislikes.md` to carry a 3-line YAML frontmatter
+  block (name, type, brief description) with prose underneath. Adds
+  the `pyyaml` dep. Migration is mechanical (one-time script).
+  Parser becomes `yaml.safe_load` rather than regex. **Do not pull
+  forward** until the shared-parser approach visibly fails — format
+  changes are larger than they look in the abstract.
