@@ -49,6 +49,9 @@ reject: ## Append to dislikes.md (LABEL='X' REASON='Y' [CATEGORY='Artists'])
 validate: ## Promote a candidate to validated (MOOD='X' PICK='Y')
 	uv run python -m scripts.validate "$(MOOD)" "$(PICK)"
 
+add-mood: ## Add a new mood scaffold to moods.md (NAME='X' [DESC='Y'])
+	uv run python -m scripts.add_mood "$(NAME)" "$(DESC)"
+
 recent: ## Last N days of scrobbles ([N=7])
 	uv run python -m scripts.recent "$(N)"
 

@@ -135,6 +135,7 @@ make stats                                # top-N concentration, long-tail size
 make mood NAME='small hours'              # picks for a mood as Spotify search links
 make reject LABEL='X' REASON='Y' [CATEGORY='Artists']  # append to dislikes.md
 make validate MOOD='small hours' PICK='Stars of the Lid'  # promote candidate → validated
+make add-mood NAME='deep work' DESC='Focused coding.'  # scaffold a new mood section
 ```
 
 Or directly: `uv run python -m scripts.<name> [args]`.
