@@ -17,13 +17,6 @@ This file should stay short and honest.
 
 ## Next
 
-- **Daily one-track horoscope** (`make daily`) — single pick per day,
-  date-keyed in a gitignored `daily.log.md`, varied across cluster
-  corners so it does not ossify. Strategy rotates by day-of-year:
-  comfort (top 50), forgotten (dormant rank 100-500), gap (similar
-  to top-1, not in library), loved (random from loved tracks),
-  tag-walk (random track from a random user-top tag). Re-running
-  the same day returns the same pick.
 - **Period-in-music report** (`make review PERIOD=month` or `=year`)
   — composite analytics: top artists this period vs. baseline, what
   disappeared, what appeared, dominant tags, listening volume curve.

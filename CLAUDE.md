@@ -143,6 +143,7 @@ make cooldown DAYS=7                       # show recent recs (cool-down list)
 make chase N=5                             # similar to the most recent scrobble (sonic chaser)
 make depth ARTIST='Pink Floyd'             # artist's canonical albums vs your plays (gap finder)
 make rut DAYS=14                           # detect listening rut (top-artist concentration)
+make daily                                 # today's one-track horoscope (idempotent per day)
 ```
 
 Or directly: `uv run python -m scripts.<name> [args]`.

@@ -142,6 +142,9 @@ chase: ## Now-playing chaser: similar to the most recent scrobble ([N=5])
 rut: ## Rut detector: top-artist concentration in last N days ([DAYS=14])
 	uv run python -m scripts.rut "$(DAYS)"
 
+daily: ## Today's one-track horoscope (date-keyed; same pick on re-run)
+	uv run python -m scripts.daily
+
 depth: ## Artist depth check (ARTIST='X' or positional)
 	@_artist="$(or $(ARTIST),$(POSITIONAL_ARGS))"; \
 	if [ -z "$$_artist" ]; then \

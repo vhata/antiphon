@@ -69,6 +69,11 @@ Legend: ✓ shipped · ⋯ in progress
   days. Flags as a rut when top-1 ≥ 40% or top-2 ≥ 60% of plays
   (sample-size-aware), and surfaces *lean in* (depth into the top
   artist) vs *lean out* (forgotten gems) options.
+- ✓ **Daily one-track horoscope** (`scripts/daily.py`; `make daily`)
+  — single track per day, persisted in `daily.log.md` (gitignored)
+  so re-running returns the same pick. Strategy rotates by
+  day-of-year through five corners (`comfort`, `forgotten`, `gap`,
+  `loved`, `tag-walk`) so the daily ritual stays varied.
 - ✓ **Shared Markdown parser modules** (`scripts/_moods.py`,
   `scripts/_dislikes.py`) — single source of truth for parsing and
   mutating `moods.md` and `dislikes.md`. Every script that touches
