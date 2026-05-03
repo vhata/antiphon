@@ -12,28 +12,19 @@ matches by substring against the bullet text.
 
 from __future__ import annotations
 
-import re
 import sys
 from datetime import date
 from pathlib import Path
 
-MOODS_MD = Path(__file__).resolve().parent.parent / "moods.md"
-
-
-def _split_bullets(body: str) -> tuple[str, list[str]]:
-    """Return (preamble, bullets) for a section body.
-
-    Bullets begin with `- ` at column 0; continuation lines (indented
-    or blank-followed-by-indent) are kept attached to their bullet.
-    """
-    parts = re.split(r"\n(?=- )", body.rstrip("\n"))
-    if not parts:
-        return ("", [])
-    return (parts[0], parts[1:])
-
-
-def _strip_none_yet(body: str) -> str:
-    return re.sub(r"^\s*\*\(none yet\)\*\s*$", "", body, flags=re.MULTILINE)
+from scripts._moods import (
+    MOODS_MD,
+    find_mood_section,
+    find_subsection,
+    replace_mood_section_body,
+    replace_subsection_body,
+    split_bullets,
+    strip_none_yet,
+)
 
 
 def promote(
@@ -52,23 +43,16 @@ def promote(
 
     text = path.read_text()
 
-    mood_re = re.compile(
-        rf"(^## {re.escape(mood)}\s*$)(.*?)(?=^##\s|\Z)",
-        re.MULTILINE | re.DOTALL | re.IGNORECASE,
-    )
-    mood_match = mood_re.search(text)
-    if not mood_match:
+    section = find_mood_section(text, mood)
+    if section is None:
         raise RuntimeError(f"mood '{mood}' not found in moods.md")
 
-    mood_heading = mood_match.group(1)
-    mood_body = mood_match.group(2)
-
-    cand_re = re.compile(r"(^### Candidates\s*$)(.*?)(?=^###\s|\Z)", re.MULTILINE | re.DOTALL)
-    cand_match = cand_re.search(mood_body)
-    if not cand_match:
+    cand_info = find_subsection(section, "Candidates")
+    if not cand_info:
         raise RuntimeError(f"no '### Candidates' subsection under mood '{mood}'")
+    _, cand_body, _, _ = cand_info
 
-    cand_preamble, cand_bullets = _split_bullets(cand_match.group(2))
+    cand_preamble, cand_bullets = split_bullets(cand_body)
 
     matching_idx = None
     for idx, bullet in enumerate(cand_bullets):
@@ -88,33 +72,23 @@ def promote(
     else:
         new_cand_body = (cand_preamble.rstrip() + "\n\n*(none yet)*").rstrip() + "\n\n"
 
-    new_cand_section = cand_match.group(1) + "\n" + new_cand_body
-    mood_body_after_cand = (
-        mood_body[: cand_match.start()] + new_cand_section + mood_body[cand_match.end() :]
-    )
+    section_after_cand = replace_subsection_body(section, "Candidates", new_cand_body)
 
-    val_re = re.compile(r"(^### Validated\s*$)(.*?)(?=^###\s|\Z)", re.MULTILINE | re.DOTALL)
-    val_match = val_re.search(mood_body_after_cand)
-    if not val_match:
+    val_info = find_subsection(section_after_cand, "Validated")
+    if not val_info:
         raise RuntimeError(f"no '### Validated' subsection under mood '{mood}'")
+    _, val_body, _, _ = val_info
 
-    val_body_clean = _strip_none_yet(val_match.group(2))
-    val_preamble, val_bullets = _split_bullets(val_body_clean)
+    val_body_clean = strip_none_yet(val_body)
+    val_preamble, val_bullets = split_bullets(val_body_clean)
     val_bullets.append(promoted_dated)
 
     joiner = "\n\n" if val_preamble.strip() else "\n"
     new_val_body = (val_preamble.rstrip() + joiner + "\n".join(val_bullets)).rstrip() + "\n\n"
 
-    new_val_section = val_match.group(1) + "\n" + new_val_body
-    final_mood_body = (
-        mood_body_after_cand[: val_match.start()]
-        + new_val_section
-        + mood_body_after_cand[val_match.end() :]
-    )
+    final_section = replace_subsection_body(section_after_cand, "Validated", new_val_body)
 
-    new_text = (
-        text[: mood_match.start()] + mood_heading + final_mood_body + text[mood_match.end() :]
-    )
+    new_text = replace_mood_section_body(text, mood, final_section)
     path.write_text(new_text)
     return promoted
 

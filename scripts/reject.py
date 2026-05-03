@@ -15,12 +15,12 @@ Category match is case-insensitive substring; "Vibes" matches the
 
 from __future__ import annotations
 
-import re
 import sys
 from datetime import date
 from pathlib import Path
 
-DISLIKES_MD = Path(__file__).resolve().parent.parent / "dislikes.md"
+from scripts._dislikes import DISLIKES_MD, find_category
+
 DEFAULT_CATEGORY = "Artists"
 
 
@@ -31,11 +31,10 @@ def append_rejection(
     path: Path | None = None,
     today: str | None = None,
 ) -> None:
-    """Append a rejection to the named category.
+    """Append a rejection to the named category in dislikes.md.
 
     Replaces the `*(none yet)*` placeholder if present, otherwise
-    appends at the end of the section. Category match is
-    case-insensitive substring against the H2 heading text.
+    appends at the end of the section.
     """
     if path is None:
         path = DISLIKES_MD
@@ -49,30 +48,18 @@ def append_rejection(
     text = path.read_text()
     new_line = f"- **{label}** — {reason}. *({today})*"
 
-    section_re = re.compile(
-        r"(^## ([^\n]+)\s*$)(.*?)(?=^##\s|\Z)",
-        re.MULTILINE | re.DOTALL,
-    )
-
-    target = None
-    for match in section_re.finditer(text):
-        heading_text = match.group(2).strip()
-        if category.lower() in heading_text.lower():
-            target = match
-            break
-
-    if not target:
+    info = find_category(text, category)
+    if not info:
         raise RuntimeError(f"could not find a category matching '{category}' in dislikes.md")
 
-    section_heading = target.group(1)
-    section_body = target.group(3)
+    heading, body, start, end = info
 
-    if "*(none yet)*" in section_body:
-        new_body = section_body.replace("*(none yet)*", new_line)
+    if "*(none yet)*" in body:
+        new_body = body.replace("*(none yet)*", new_line)
     else:
-        new_body = section_body.rstrip() + "\n" + new_line + "\n\n"
+        new_body = body.rstrip() + "\n" + new_line + "\n\n"
 
-    new_text = text[: target.start()] + section_heading + new_body + text[target.end() :]
+    new_text = text[:start] + heading + "\n" + new_body + text[end:]
     path.write_text(new_text)
 
 
