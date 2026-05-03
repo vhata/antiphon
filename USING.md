@@ -64,6 +64,7 @@ After `make install` (uv-managed Python deps):
 | `make depth ARTIST='Pink Floyd'`                                  | Artist depth check: which canonical albums you've under-played. |
 | `make rut DAYS=14`                                                | Detect listening rut: top-1 / top-2 concentration check.      |
 | `make daily`                                                      | Today's one-track horoscope; same pick on re-run.             |
+| `make review PERIOD=month`                                        | Period-in-music report; categorises top artists vs. overall.  |
 
 Or run any of them directly: `uv run python -m scripts.<name> [args]`.
 

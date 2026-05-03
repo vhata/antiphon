@@ -144,6 +144,7 @@ make chase N=5                             # similar to the most recent scrobble
 make depth ARTIST='Pink Floyd'             # artist's canonical albums vs your plays (gap finder)
 make rut DAYS=14                           # detect listening rut (top-artist concentration)
 make daily                                 # today's one-track horoscope (idempotent per day)
+make review PERIOD=month                   # period-in-music report (week/month/quarter/year)
 ```
 
 Or directly: `uv run python -m scripts.<name> [args]`.

@@ -79,6 +79,12 @@ Legend: ✓ shipped · ⋯ in progress
   through <album>"* / *"liner notes for <album>"*; produces
   track-by-track notes for an album the listener is about to play.
   Distinct from `depth`, which is about what to play *next*.
+- ✓ **Period-in-music report** (`scripts/review.py`; `make review
+  PERIOD={week,month,quarter,year}`) — categorises this period's top
+  artists against the listener's overall taste: *newcomers* (not in
+  overall top 100), *comfort returners* (also in overall top 25),
+  and *mid-tier* (overall rank 26-100). Plus a one-line volume note.
+  Periodic check-in when a real period boundary hits.
 - ✓ **Shared Markdown parser modules** (`scripts/_moods.py`,
   `scripts/_dislikes.py`) — single source of truth for parsing and
   mutating `moods.md` and `dislikes.md`. Every script that touches

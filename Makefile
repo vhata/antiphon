@@ -145,6 +145,9 @@ rut: ## Rut detector: top-artist concentration in last N days ([DAYS=14])
 daily: ## Today's one-track horoscope (date-keyed; same pick on re-run)
 	uv run python -m scripts.daily
 
+review: ## Period-in-music report (PERIOD={week,month,quarter,year}; default month)
+	uv run python -m scripts.review "$(PERIOD)"
+
 depth: ## Artist depth check (ARTIST='X' or positional)
 	@_artist="$(or $(ARTIST),$(POSITIONAL_ARGS))"; \
 	if [ -z "$$_artist" ]; then \

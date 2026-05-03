@@ -17,12 +17,6 @@ This file should stay short and honest.
 
 ## Next
 
-- **Period-in-music report** (`make review PERIOD=month` or `=year`)
-  — composite analytics: top artists this period vs. baseline, what
-  disappeared, what appeared, dominant tags, listening volume curve.
-  Heavy on the LLM-narration side. Useful as a periodic check-in.
-  Larger scope than daily; build only when a real period boundary
-  approaches.
 
 ## Soon
 
