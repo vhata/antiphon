@@ -49,4 +49,13 @@ reject: ## Append to dislikes.md (LABEL='X' REASON='Y' [CATEGORY='Artists'])
 validate: ## Promote a candidate to validated (MOOD='X' PICK='Y')
 	uv run python -m scripts.validate "$(MOOD)" "$(PICK)"
 
+recent: ## Last N days of scrobbles ([N=7])
+	uv run python -m scripts.recent "$(N)"
+
+similar: ## Similar artists w/ library overlap (ARTIST='X' [N=20])
+	uv run python -m scripts.similar "$(ARTIST)" "$(N)"
+
+stats: ## Library coverage diagnostic
+	uv run python -m scripts.stats
+
 .DEFAULT_GOAL := help

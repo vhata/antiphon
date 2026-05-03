@@ -36,20 +36,30 @@ searches. Click through to play.
 
 After `make install` (uv-managed Python deps):
 
-| Command                         | What it does                                                    |
-| ------------------------------- | --------------------------------------------------------------- |
-| `make profile`                  | Compact listening-shape across 4 time windows + recent + loved. |
-| `make gems`                     | Dormant artists in the overall top 100–500.                     |
-| `make mood NAME='<mood>'`       | Picks for a mood as ready-to-click Spotify search links.        |
+**Reading data from last.fm:**
 
-Or run directly: `uv run python -m scripts.profile`,
-`uv run python -m scripts.forgotten_gems [N]`,
-`uv run python -m scripts.mood "<mood>"`.
+| Command                                 | What it does                                                            |
+| --------------------------------------- | ----------------------------------------------------------------------- |
+| `make profile`                          | Compact listening-shape across 4 time windows + recent + loved.         |
+| `make gems`                             | Dormant artists in the overall top 100–500 (forgotten-gem retrieval).   |
+| `make recent N=7`                       | Last N days of scrobbles + per-artist tally for the period.             |
+| `make similar ARTIST='X' N=20`          | Artists similar to X, with library overlap marked (gaps flagged).       |
+| `make stats`                            | Library-coverage diagnostic: top-N concentration, long-tail size.       |
 
-`profile` and `gems` auto-load `.env` from the repo root if
+**Editing local state:**
+
+| Command                                                           | What it does                                                  |
+| ----------------------------------------------------------------- | ------------------------------------------------------------- |
+| `make mood NAME='<mood>'`                                         | Picks for a mood as ready-to-click Spotify search links.      |
+| `make reject LABEL='X' REASON='Y' [CATEGORY='Artists']`           | Append to `dislikes.md` under a category.                     |
+| `make validate MOOD='small hours' PICK='Stars of the Lid'`        | Promote a candidate bullet to validated under a mood.         |
+
+Or run any of them directly: `uv run python -m scripts.<name> [args]`.
+
+The data-fetching scripts auto-load `.env` from the repo root if
 `LASTFM_API_KEY` is not already in your shell environment — no need
-to source it manually. `mood` needs no credentials at all; it just
-reads `moods.md`.
+to source it manually. The state-editing and `mood` scripts need no
+credentials.
 
 ## Files you edit
 
