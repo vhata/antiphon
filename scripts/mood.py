@@ -40,10 +40,12 @@ def render(mood_name: str, mood_section: str) -> str:
     if desc:
         lines.extend([f"*{desc.group(1).strip()}*", ""])
 
+    any_picks = False
     for sub in ("Validated", "Candidates"):
         picks = picks_in(mood_section, sub)
         if not picks:
             continue
+        any_picks = True
         lines.append(f"## {sub}")
         lines.append("")
         for pick in picks:
@@ -52,6 +54,9 @@ def render(mood_name: str, mood_section: str) -> str:
             display = f"{artist} — {album}" if album else artist
             lines.append(f"- [{display}]({spotify_search_url(query)})")
         lines.append("")
+
+    if not any_picks:
+        lines.append("*(no picks yet — ask Claude for some, or hand-edit `moods.md`)*")
 
     return "\n".join(lines).rstrip() + "\n"
 
