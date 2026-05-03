@@ -21,6 +21,23 @@ This file should stay short and honest.
   recent scrobble, suggest something that segues sonically.
 - **Cool-down for past recs** — lightweight session log so I don't
   recommend the same thing twice in nearby sessions.
+- **`make populate-mood NAME='X'` — first script that invokes an LLM**
+  — calls Claude Code headless (`claude -p`) with the mood's
+  description (parsed from `moods.md`) plus the listener's listening
+  shape (`scripts/profile` output) and asks for 4–5 candidate bullets.
+  Output appended to the mood's `### Candidates` section via
+  `_moods.replace_subsection_body`. No new auth needed — Claude Code
+  is already a prerequisite; depends on `claude` being on PATH and the
+  headless mode behaving predictably.
+
+  **Architectural step worth naming.** Until now, scripts wrap data
+  and Claude does the reasoning in chat. This puts reasoning *behind*
+  a script — a small but real line crossed. Worth doing for the
+  ergonomics (especially in scripted flows where breaking into chat
+  is friction), but worth knowing we are stepping over it. Sister
+  scripts that could follow once this lands and proves stable:
+  `populate-dislikes`, `populate-recs`, `chase` (the now-playing
+  chaser, which currently sits as its own TODO).
 
 ## Soon
 
