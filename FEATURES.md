@@ -18,12 +18,13 @@ Legend: ✓ shipped · ⋯ in progress
   Antiphon detects `mcp__lastfm__*` tools when present and prefers them
   over the self-contained `.env` + curl path. Both setup options
   documented in README; method-mapping table keeps them in sync.
-- ✓ **Helper scripts** (`scripts/profile.py`, `scripts/forgotten_gems.py`;
-  `make profile`, `make gems`) — Python wrappers around the data-access
-  path that emit compact text instead of raw JSON. Saves significant
-  context tokens versus inline curl. `profile` returns a tight
-  listening-shape snapshot (recent + top across four windows + loved);
-  `gems` returns the dormant set used by forgotten-gem mode.
+- ✓ **Helper scripts** (`scripts/profile.py`, `scripts/forgotten_gems.py`,
+  `scripts/mood.py`; `make profile`, `make gems`, `make mood NAME='...'`)
+  — Python wrappers around the data layer that emit compact text instead
+  of raw JSON. `profile` returns a tight listening-shape snapshot;
+  `gems` returns the forgotten-gem dormant set; `mood` parses `moods.md`
+  for a named mood and prints its validated + candidate picks as
+  Spotify search links (no API key needed; pure file lookup).
 - ✓ **Layer-2 review skill** (`.claude/skills/antiphon-review/SKILL.md`)
   — project-aware pre-commit review reading `CLAUDE.md`, `README.md`,
   `FEATURES.md`, and `WISHLIST.md` § 4 before inspecting the diff.

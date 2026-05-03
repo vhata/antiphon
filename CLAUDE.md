@@ -87,12 +87,14 @@ significant context tokens.
 Run via `make` targets after sourcing `.env`:
 
 ```sh
-set -a; source .env; set +a
-make profile      # listening-shape summary across 4 time windows + loved
-make gems         # dormant artists in the overall top 100-500 (forgotten-gem mode)
+set -a; source .env; set +a               # only needed for profile / gems
+make profile                              # listening-shape summary across 4 time windows + loved
+make gems                                 # dormant artists in the overall top 100-500
+make mood NAME='small hours'              # picks for a mood as Spotify search links
 ```
 
-Or directly: `uv run python -m scripts.profile`, etc.
+Or directly: `uv run python -m scripts.<name> [args]`. The `mood` script
+does not need the API key — it only reads `moods.md`.
 
 Scripts use the self-contained data-access path (`.env` + curl); they
 do not have access to the MCP tools, which are session-only. The

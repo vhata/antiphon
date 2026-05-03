@@ -40,4 +40,7 @@ profile: ## Print the listening-shape profile (needs .env loaded)
 gems: ## Print forgotten gems (needs .env loaded)
 	uv run python -m scripts.forgotten_gems
 
+mood: ## Print a mood's picks as Spotify links (NAME='small hours')
+	uv run python -m scripts.mood "$(NAME)"
+
 .DEFAULT_GOAL := help

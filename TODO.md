@@ -21,12 +21,6 @@ This file should stay short and honest.
   recent scrobble, suggest something that segues sonically.
 - **Cool-down for past recs** — lightweight session log so I don't
   recommend the same thing twice in nearby sessions.
-- **`scripts/mood.py` + `make mood <name>`** — given a mood name,
-  parse `moods.md`, find the matching section, and dump the
-  validated + candidate picks as ready-to-click Spotify search
-  links. Roughly 30 lines. Useful as a no-Claude-needed quick
-  reference when the listener already knows what mood they're in
-  and just wants picks.
 
 ## Soon
 
