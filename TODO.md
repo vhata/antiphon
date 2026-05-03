@@ -42,6 +42,17 @@ This file should stay short and honest.
   recent scrobble, suggest something that segues sonically.
 - **Cool-down for past recs** — lightweight session log so I don't
   recommend the same thing twice in nearby sessions.
+- **`make add-mood NAME='...'`** — append a new mood section to
+  `moods.md` with the standard scaffold: italic description
+  placeholder, "picks should..." paragraph, empty `### Validated`
+  with `*(none yet)*`, empty `### Candidates` with `*(none yet)*`.
+  Inserts above the meta `## Adding a new mood` section. Refuses
+  if a mood with the same name already exists.
+  Mechanical scaffold is the script; filling in the description and
+  candidate picks is either hand-editing or chat with Claude. Pairs
+  with the existing `make validate MOOD=... PICK=...` (promote
+  candidate → validated) so the mood lifecycle is fully scriptable
+  end-to-end.
 
 ## Soon
 
