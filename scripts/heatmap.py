@@ -1,7 +1,7 @@
 """Listening heat-map: day-of-week × hour-of-day density.
 
 Usage:
-    uv run python -m scripts.heatmap [DAYS]
+    uv run python -m scripts.heatmap [DAYS] [--include-sleep]
     make heatmap [DAYS=90]
 
 Pulls the listener's recent scrobbles in the chosen window (default
@@ -11,6 +11,11 @@ the peak cell.
 
 The local-time choice matters: scrobbles are stored in UTC, but
 "when do I listen" is only meaningful in the listener's timezone.
+
+If `sleep_albums.md` exists at the repo root, scrobbles matching any
+of its (artist, album) entries are filtered out before bucketing so
+that overnight-tail records do not skew the early-morning cells.
+Pass `--include-sleep` to disable the filter and see the raw view.
 """
 
 from __future__ import annotations
@@ -19,6 +24,7 @@ import sys
 from datetime import UTC, datetime, timedelta, tzinfo
 from typing import Any
 
+from scripts import _sleep
 from scripts._lastfm import call
 from scripts.profile import get_username
 
@@ -50,6 +56,28 @@ def bucket_by_hour_dow(
         dt = datetime.fromtimestamp(ts, tz=tz)
         grid[dt.weekday()][dt.hour] += 1
     return grid
+
+
+def filter_sleep_albums(
+    tracks: list[dict[str, Any]],
+    pairs: list[tuple[str, str]],
+) -> list[dict[str, Any]]:
+    """Drop tracks whose (artist, album) matches any entry in `pairs`.
+
+    Matching is case-insensitive. Tracks missing an album field are
+    kept (a sleep-album entry without an album cannot match). If
+    `pairs` is empty the input list is returned unchanged.
+    """
+    if not pairs:
+        return tracks
+    kept: list[dict[str, Any]] = []
+    for track in tracks:
+        artist = (track.get("artist") or {}).get("#text", "")
+        album = (track.get("album") or {}).get("#text", "")
+        if album and _sleep.matches(artist, album, pairs):
+            continue
+        kept.append(track)
+    return kept
 
 
 def render_grid(grid: list[list[int]]) -> str:
@@ -102,19 +130,43 @@ def _fetch_window(user: str, days: int) -> list[dict[str, Any]]:
     return tracks
 
 
-def main(days: int = DEFAULT_DAYS) -> int:
+def main(days: int = DEFAULT_DAYS, include_sleep: bool = False) -> int:
     user = get_username()
     tracks = _fetch_window(user, days)
-    grid = bucket_by_hour_dow(tracks)
+    raw_count = len(tracks)
+
+    pairs = [] if include_sleep else _sleep.load()
+    filtered_tracks = filter_sleep_albums(tracks, pairs)
+    removed = raw_count - len(filtered_tracks)
+
+    grid = bucket_by_hour_dow(filtered_tracks)
     total = sum(sum(row) for row in grid)
 
     print(f"=== {user} — listening heat-map ===")
-    print(f"({total:,} scrobbles over the last {days} days, local time)")
+    if pairs and removed > 0:
+        print(
+            f"({total:,} scrobbles over the last {days} days, local time; "
+            f"{removed:,} sleep-album scrobbles filtered)"
+        )
+    else:
+        print(f"({total:,} scrobbles over the last {days} days, local time)")
     print()
     print(render_grid(grid))
     return 0
 
 
+def _parse_args(argv: list[str]) -> tuple[int, bool]:
+    """Split argv into (days, include_sleep). Order-agnostic."""
+    days = DEFAULT_DAYS
+    include_sleep = False
+    for arg in argv:
+        if arg == "--include-sleep":
+            include_sleep = True
+        elif arg:
+            days = int(arg)
+    return days, include_sleep
+
+
 if __name__ == "__main__":
-    n = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1] else DEFAULT_DAYS
-    sys.exit(main(n))
+    n, inc = _parse_args(sys.argv[1:])
+    sys.exit(main(n, inc))

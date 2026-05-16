@@ -93,6 +93,14 @@ Legend: ✓ shipped · ⋯ in progress
   (scrobbles are stored in UTC, but the question "when do I listen?"
   is only meaningful locally). Pure bucketing + render functions are
   unit-tested separately from the API plumbing.
+- ✓ **Sleep-album filter for behavioural views** (`sleep_albums.md`,
+  gitignored; `sleep_albums.example.md` template; `scripts/_sleep.py`)
+  — listener-specific list of records they fall asleep to. The
+  heat-map drops scrobbles matching the list before bucketing so
+  the early-morning cells reflect active listening rather than
+  overnight tails of long-form ambient. Pass `--include-sleep` to
+  the heat-map for the raw view. Parser lives beside `_moods.py` /
+  `_dislikes.py`; absence of the file is a clean no-op.
 - ✓ **Listening snapshot dashboard** (`scripts/dashboard.py`;
   `make dashboard`) — single-screen `rich`-formatted view of the
   listener's current shape: top artists across the four time windows
