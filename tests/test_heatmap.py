@@ -8,8 +8,18 @@ from typing import Any
 from scripts import heatmap
 
 
-def _track(when: datetime) -> dict[str, Any]:
-    return {"date": {"uts": str(int(when.timestamp()))}, "artist": {"#text": "X"}, "name": "Y"}
+def _track(
+    when: datetime,
+    artist: str = "X",
+    album: str = "",
+    name: str = "Y",
+) -> dict[str, Any]:
+    return {
+        "date": {"uts": str(int(when.timestamp()))},
+        "artist": {"#text": artist},
+        "album": {"#text": album},
+        "name": name,
+    }
 
 
 def test_module_exposes_main_and_bucket() -> None:
@@ -73,3 +83,39 @@ def test_render_grid_peak_cell_uses_top_block() -> None:
     grid[3][14] = 99  # peak somewhere mid-week, mid-afternoon
     rendered = heatmap.render_grid(grid)
     assert "█" in rendered
+
+
+def test_filter_sleep_albums_removes_matching_tracks() -> None:
+    when = datetime(2026, 5, 11, 3, 0, tzinfo=UTC)
+    tracks = [
+        _track(when, artist="Brian Eno", album="Music for Airports"),
+        _track(when, artist="Aphex Twin", album="Selected Ambient Works"),
+    ]
+    pairs = [("brian eno", "music for airports")]
+    kept = heatmap.filter_sleep_albums(tracks, pairs)
+    assert len(kept) == 1
+    assert kept[0]["artist"]["#text"] == "Aphex Twin"
+
+
+def test_filter_sleep_albums_is_case_insensitive() -> None:
+    when = datetime(2026, 5, 11, 3, 0, tzinfo=UTC)
+    tracks = [_track(when, artist="BRIAN ENO", album="MUSIC FOR AIRPORTS")]
+    pairs = [("brian eno", "music for airports")]
+    kept = heatmap.filter_sleep_albums(tracks, pairs)
+    assert kept == []
+
+
+def test_filter_sleep_albums_returns_input_when_filter_empty() -> None:
+    when = datetime(2026, 5, 11, 3, 0, tzinfo=UTC)
+    tracks = [_track(when, artist="X", album="Y")]
+    assert heatmap.filter_sleep_albums(tracks, []) == tracks
+
+
+def test_filter_sleep_albums_handles_missing_album_field() -> None:
+    when = datetime(2026, 5, 11, 3, 0, tzinfo=UTC)
+    tracks: list[dict[str, Any]] = [
+        {"date": {"uts": str(int(when.timestamp()))}, "artist": {"#text": "X"}, "name": "Y"},
+    ]
+    pairs = [("brian eno", "music for airports")]
+    kept = heatmap.filter_sleep_albums(tracks, pairs)
+    assert kept == tracks
