@@ -5,7 +5,9 @@ from __future__ import annotations
 from datetime import date
 from pathlib import Path
 
-from scripts import daily
+import pytest
+
+from scripts import _spotify, daily
 
 
 def test_strategy_for_date_is_stable() -> None:
@@ -60,3 +62,32 @@ def test_spotify_url_encodes_spaces() -> None:
 
 def test_strategies_set_matches_pickers() -> None:
     assert set(daily.STRATEGIES) == set(daily.PICKERS.keys())
+
+
+# Spotify integration: three branches — no creds, direct hit, miss-falls-back.
+
+
+def test_spotify_url_returns_search_when_no_credentials() -> None:
+    # conftest strips Spotify env vars by default; behave as before.
+    url = daily.spotify_url("Massive Attack", "Teardrop")
+    assert url.startswith("https://open.spotify.com/search/")
+
+
+def test_spotify_url_returns_direct_uri_when_search_hits(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("SPOTIFY_CLIENT_ID", "id")
+    monkeypatch.setenv("SPOTIFY_CLIENT_SECRET", "secret")
+    monkeypatch.setattr(_spotify, "search_track", lambda a, t: "https://open.spotify.com/track/xyz")
+    url = daily.spotify_url("Massive Attack", "Teardrop")
+    assert url == "https://open.spotify.com/track/xyz"
+
+
+def test_spotify_url_falls_back_to_search_when_lookup_misses(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("SPOTIFY_CLIENT_ID", "id")
+    monkeypatch.setenv("SPOTIFY_CLIENT_SECRET", "secret")
+    monkeypatch.setattr(_spotify, "search_track", lambda a, t: None)
+    url = daily.spotify_url("Massive Attack", "Teardrop")
+    assert url.startswith("https://open.spotify.com/search/")

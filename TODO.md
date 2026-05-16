@@ -72,8 +72,6 @@ This file should stay short and honest.
   navigation, key bindings, and persistent state — over the
   `WISHLIST.md §4` line (real application code). Re-evaluate only
   if the static snapshot version proves clearly inadequate.
-- **Spotify Web API (Client Credentials)** — direct track URIs
-  instead of search URLs. ~10 minutes of setup to register an app.
 - **Held in reserve: YAML frontmatter for structured Markdown** —
   the established Markdown-meets-structure pattern (Hugo / Jekyll /
   MDX). If the shared-parser approach hits a real wall — a parsing

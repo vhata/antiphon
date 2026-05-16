@@ -139,3 +139,10 @@ Legend: ✓ shipped · ⋯ in progress
   `FEATURES.md`, and `WISHLIST.md` § 4 before inspecting the diff.
   Reports convention drift, missing living-doc updates, and accidental
   crossings of the "becomes software" line. Reports only; no auto-fix.
+- ✓ **Optional Spotify Web API integration** (`scripts/_spotify.py`,
+  `SPOTIFY_CLIENT_ID` + `SPOTIFY_CLIENT_SECRET` in `.env`) — when both
+  env vars are set, recommendation links resolve to direct
+  `open.spotify.com/{track,album,artist}/<id>` URLs via the Spotify
+  Web API client-credentials flow. Missing credentials or API misses
+  fall back silently to the existing search-URL convention. Stdlib
+  only; in-process token cache. Callers: `daily`, `chase`, `mood`.
