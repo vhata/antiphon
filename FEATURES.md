@@ -88,7 +88,10 @@ Legend: ✓ shipped · ⋯ in progress
 - ✓ **Listening snapshot dashboard** (`scripts/dashboard.py`;
   `make dashboard`) — single-screen `rich`-formatted view of the
   listener's current shape: top artists across the four time windows
-  side-by-side, a 30-day scrobble sparkline, top tags, mood-library
+  side-by-side, a 30-day scrobble sparkline, a library-genres panel
+  (tags aggregated from `artist.getInfo` on the top 10 overall
+  artists, weighted by playcount × tag rank — so the panel reflects
+  the *library*, not the listener's self-tagging), mood-library
   fullness (with thin moods flagged), the cool-down list, and a
   loved-tracks weekly delta. Static one-shot — no persistent state,
   no interactivity — so it stays on the right side of

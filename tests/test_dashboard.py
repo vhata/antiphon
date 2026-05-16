@@ -103,6 +103,48 @@ Meta section — should be excluded.
     assert all(name.lower() != "adding a new mood" for name, _, _ in health)
 
 
+def test_aggregate_artist_tags_returns_empty_for_empty_input() -> None:
+    assert dashboard.aggregate_artist_tags([]) == []
+
+
+def test_aggregate_artist_tags_weights_higher_ranks_more() -> None:
+    # A single artist with playcount 100 and two tags. Tag at rank 0
+    # should score higher than tag at rank 1.
+    result = dashboard.aggregate_artist_tags([(100, ["trip-hop", "electronic"])], top_n=2)
+    assert result[0][0] == "trip-hop"
+    assert result[1][0] == "electronic"
+    assert result[0][1] > result[1][1]
+
+
+def test_aggregate_artist_tags_sums_across_artists() -> None:
+    # Two artists both tagged "electronic"; the tag should accumulate.
+    result = dashboard.aggregate_artist_tags(
+        [
+            (1000, ["electronic"]),
+            (500, ["electronic"]),
+        ],
+        top_n=5,
+    )
+    assert len(result) == 1
+    assert result[0][0] == "electronic"
+    # weight = (5 - 0) * playcount summed = 5 * 1500 = 7500
+    assert result[0][1] == 7500
+
+
+def test_aggregate_artist_tags_respects_top_n() -> None:
+    items: list[tuple[int, list[str]]] = [
+        (100, ["a", "b", "c", "d", "e"]),
+    ]
+    assert len(dashboard.aggregate_artist_tags(items, top_n=3)) == 3
+
+
+def test_aggregate_artist_tags_caps_per_artist_at_genre_tags_per_artist() -> None:
+    # Tags past the GENRE_TAGS_PER_ARTIST cutoff are ignored.
+    long_tag_list = [f"tag{i}" for i in range(20)]
+    result = dashboard.aggregate_artist_tags([(100, long_tag_list)], top_n=20)
+    assert len(result) == dashboard.GENRE_TAGS_PER_ARTIST
+
+
 def test_loved_in_window_filters_by_timestamp() -> None:
     now = datetime(2026, 5, 15, 12, 0, tzinfo=UTC)
     one_day_ago = int(datetime(2026, 5, 14, 12, 0, tzinfo=UTC).timestamp())

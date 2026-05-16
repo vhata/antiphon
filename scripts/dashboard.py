@@ -36,7 +36,9 @@ WINDOWS: list[tuple[str, str]] = [
 SPARK_BLOCKS = "▁▂▃▄▅▆▇█"
 PULSE_DAYS = 30
 TOP_PER_WINDOW = 5
-TOP_TAGS = 8
+TOP_GENRES = 8
+GENRE_SEED_ARTISTS = 10  # artists.getInfo is called once per seed; keep modest
+GENRE_TAGS_PER_ARTIST = 5  # take this many top tags per artist before aggregating
 COOLDOWN_DAYS = 7
 THIN_MOOD_THRESHOLD = 3  # validated picks below this are flagged as thin
 LOVED_WINDOW_DAYS = 7
@@ -85,6 +87,29 @@ def mood_health(moods_text: str) -> list[tuple[str, int, int]]:
         candidates = len(picks_in(section, "Candidates"))
         result.append((name, validated, candidates))
     return result
+
+
+def aggregate_artist_tags(
+    items: list[tuple[int, list[str]]],
+    top_n: int = TOP_GENRES,
+) -> list[tuple[str, int]]:
+    """Aggregate artist tags weighted by playcount × inverse-rank.
+
+    `items` is a list of (playcount, ordered_tags) pairs — one per
+    artist — where `ordered_tags` is the artist's top tags as returned
+    by last.fm in descending order of tag popularity. Each tag's score
+    for an artist is `playcount * (GENRE_TAGS_PER_ARTIST - rank)`, so
+    the artist's top tag contributes most. Returns the top_n tags by
+    total score, descending.
+    """
+    scores: dict[str, int] = {}
+    for playcount, tags in items:
+        for rank, tag in enumerate(tags[:GENRE_TAGS_PER_ARTIST]):
+            if not tag:
+                continue
+            weight = (GENRE_TAGS_PER_ARTIST - rank) * playcount
+            scores[tag] = scores.get(tag, 0) + weight
+    return sorted(scores.items(), key=lambda kv: -kv[1])[:top_n]
 
 
 def loved_in_window(
@@ -148,18 +173,42 @@ def _pulse_panel(tracks: list[dict[str, Any]]) -> Panel:
     return Panel(body, title=f"Last {PULSE_DAYS} days")
 
 
-def _tags_panel(user: str) -> Panel:
-    response = call("user.getTopTags", user=user, limit=TOP_TAGS)
-    tags = response.get("toptags", {}).get("tag", [])
-    if isinstance(tags, dict):
-        tags = [tags]
-    if not tags:
-        return Panel(
-            Text("(no self-tagged tracks — last.fm only counts tags you apply yourself)"),
-            title="Top tags",
-        )
-    lines = [f"{t.get('name', '?')}  ({t.get('count', '?')})" for t in tags]
-    return Panel(Text("\n".join(lines)), title="Top tags")
+def _fetch_genre_seeds(user: str) -> list[tuple[int, list[str]]]:
+    """Fetch (playcount, top-tags) for each of the top N overall artists."""
+    response = call(
+        "user.getTopArtists",
+        user=user,
+        period="overall",
+        limit=GENRE_SEED_ARTISTS,
+    )
+    artists = response.get("topartists", {}).get("artist", [])
+    seeds: list[tuple[int, list[str]]] = []
+    for artist in artists:
+        name = artist.get("name", "")
+        if not name:
+            continue
+        playcount = int(artist.get("playcount", 0))
+        info = call("artist.getInfo", artist=name)
+        tags_data = info.get("artist", {}).get("tags", {}).get("tag", [])
+        if isinstance(tags_data, dict):
+            tags_data = [tags_data]
+        tag_names = [t.get("name", "") for t in tags_data if t.get("name")]
+        seeds.append((playcount, tag_names))
+    return seeds
+
+
+def _genres_panel(seeds: list[tuple[int, list[str]]]) -> Panel:
+    if not seeds:
+        return Panel(Text("(no artist data)"), title="Library genres")
+    aggregated = aggregate_artist_tags(seeds)
+    if not aggregated:
+        return Panel(Text("(no tags found on top artists)"), title="Library genres")
+    width = max(len(tag) for tag, _ in aggregated)
+    lines = [f"{tag.ljust(width)}   {score:,}" for tag, score in aggregated]
+    return Panel(
+        Text("\n".join(lines)),
+        title=f"Library genres (top {len(aggregated)}, weighted by playcount × tag rank)",
+    )
 
 
 def _moods_panel() -> Panel:
@@ -211,11 +260,12 @@ def main() -> int:
     total = int(info.get("playcount", 0))
 
     pulse_tracks = _fetch_pulse_tracks(user)
+    genre_seeds = _fetch_genre_seeds(user)
 
     console.print(_header_panel(user, total))
     console.print(_top_artists_table(user))
     console.print(_pulse_panel(pulse_tracks))
-    console.print(_tags_panel(user))
+    console.print(_genres_panel(genre_seeds))
     console.print(_moods_panel())
     console.print(_cooldown_panel())
     console.print(_loved_panel(user))
