@@ -29,12 +29,6 @@ This file should stay short and honest.
 
 ## Maybe
 
-- **`make timeline` — discovery timeline of top-50 artists.** For
-  each artist in the overall top 50, find the date of their first
-  scrobble; print a year-by-year list of "in {year}, you discovered
-  {artist}". Narrative, not real-time. Caveat: a full historical
-  scrobble scan is expensive (deep `user.getRecentTracks` pagination)
-  and may force the `WISHLIST.md §4` SQLite question if used often.
 - **(Explicitly deferred)** Interactive `textual` TUI with
   navigation, key bindings, and persistent state — over the
   `WISHLIST.md §4` line (real application code). Re-evaluate only

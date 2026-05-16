@@ -102,6 +102,15 @@ Legend: ✓ shipped · ⋯ in progress
   overnight tails of long-form ambient. Pass `--include-sleep` to
   the heat-map for the raw view. Parser lives beside `_moods.py` /
   `_dislikes.py`; absence of the file is a clean no-op.
+- ✓ **Discovery timeline** (`scripts/timeline.py`; `make timeline
+  [N=50]`) — for each of the listener's overall top-N artists,
+  finds the date of their first scrobble and emits a year-by-year
+  list ("in 2008: Massive Attack, Pink Floyd, Portishead"). Reads
+  the full scrobble history through `scripts/_cache.py`; the first
+  run triggers a one-time backfill (slow), subsequent runs are
+  instant. Pure year-bucketing + earliest-uts logic unit-tested
+  with stubbed cache; main path verified with mocks rather than a
+  live backfill.
 - ✓ **Listening snapshot dashboard** (`scripts/dashboard.py`;
   `make dashboard`) — single-screen `rich`-formatted view of the
   listener's current shape: top artists across the four time windows

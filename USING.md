@@ -45,6 +45,7 @@ After `make install` (uv-managed Python deps):
 | `make profile`                          | Compact listening-shape across 4 time windows + recent + loved.         |
 | `make dashboard`                        | Glanceable single-screen snapshot: top artists × 4 windows, 30-day sparkline, top tags, mood-library health, cool-down, loved-tracks delta. |
 | `make heatmap DAYS=90`                  | Day-of-week × hour-of-day listening density grid in local time. Filters scrobbles matching `sleep_albums.md` (if present); pass `--include-sleep` for the raw view. |
+| `make timeline N=50`                    | Year-by-year discovery walk: for each of the top-N artists, the year you first scrobbled them. First run backfills the local cache (slow); subsequent runs are instant. |
 | `make gems`                             | Dormant artists in the overall top 100–500 (forgotten-gem retrieval).   |
 | `make recent N=7`                       | Last N days of scrobbles + per-artist tally for the period.             |
 | `make similar ARTIST='X' N=20`          | Artists similar to X, with library overlap marked (gaps flagged).       |

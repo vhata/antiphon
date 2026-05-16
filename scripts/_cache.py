@@ -35,6 +35,7 @@ out so they can be tested without touching the DB or the network.
 from __future__ import annotations
 
 import sqlite3
+import time
 from pathlib import Path
 from typing import Any
 
@@ -262,6 +263,37 @@ def _fetch_gap(user: str, from_uts: int, to_uts: int) -> list[ScrobbleRow]:
             break
         page += 1
     return all_rows
+
+
+def now_uts() -> int:
+    """Current UNIX timestamp, seconds since epoch."""
+    return int(time.time())
+
+
+def is_cold(user: str, db_path: Path | None = None) -> bool:
+    """True if no watermarks exist yet for `user` (cache will need to backfill)."""
+    conn = open_db(db_path or DB_PATH)
+    try:
+        oldest, newest = get_watermarks(conn, user)
+        return oldest is None or newest is None
+    finally:
+        conn.close()
+
+
+def scrobble_count(db_path: Path | None = None) -> int:
+    """Total rows in the local `scrobbles` table.
+
+    Per-user counting is not exposed because the table is per-DB (one
+    `antiphon.db` per listener), so the row total is the listener's
+    cached-scrobble total.
+    """
+    conn = open_db(db_path or DB_PATH)
+    try:
+        cursor = conn.execute("SELECT COUNT(*) FROM scrobbles")
+        row = cursor.fetchone()
+        return int(row[0]) if row else 0
+    finally:
+        conn.close()
 
 
 def get_scrobbles(user: str, from_uts: int, to_uts: int) -> list[dict[str, Any]]:

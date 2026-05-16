@@ -23,7 +23,7 @@ ifneq ($(filter $(ARG_TAKING_TARGETS),$(firstword $(MAKECMDGOALS))),)
 	@true
 endif
 
-.PHONY: help install check format lint typecheck test clean profile gems setup mood reject validate add-mood recent similar stats dashboard heatmap
+.PHONY: help install check format lint typecheck test clean profile gems setup mood reject validate add-mood recent similar stats dashboard heatmap timeline
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z][a-zA-Z0-9_-]*:.*?##' $(MAKEFILE_LIST) \
@@ -153,6 +153,9 @@ dashboard: ## Glanceable single-screen listening snapshot
 
 heatmap: ## Day-of-week × hour-of-day listening heat-map ([DAYS=90])
 	uv run python -m scripts.heatmap "$(DAYS)"
+
+timeline: ## Year-by-year first-scrobble walk of overall top-N ([N=50])
+	uv run python -m scripts.timeline "$(N)"
 
 depth: ## Artist depth check (ARTIST='X' or positional)
 	@_artist="$(or $(ARTIST),$(POSITIONAL_ARGS))"; \
