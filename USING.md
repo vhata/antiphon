@@ -78,12 +78,30 @@ credentials.
 | File           | Purpose                                                              |
 | -------------- | -------------------------------------------------------------------- |
 | `user.md`      | Your last.fm username + any personal listening notes for Claude.     |
-| `.env`         | Your last.fm API key (`LASTFM_API_KEY`).                             |
+| `.env`         | Your last.fm API key (`LASTFM_API_KEY`); optionally Spotify creds.   |
 | `moods.md`     | Per-mood validated and candidate picks; evolves as you use Antiphon. |
 | `dislikes.md`  | Anti-rec list; appended automatically by Claude when you reject.     |
 
 All four are gitignored — a fork-er gets the `.example` templates
 and fills in their own.
+
+## Optional: direct Spotify links
+
+Recommendations open as Spotify *search* URLs by default — which work
+without authentication and reliably land on the right result. If you
+want direct `open.spotify.com/track/<id>` (or album / artist) links
+instead, add Spotify API credentials to `.env`:
+
+```sh
+SPOTIFY_CLIENT_ID=your-client-id
+SPOTIFY_CLIENT_SECRET=your-client-secret
+```
+
+Register a free app at
+<https://developer.spotify.com/dashboard>. Antiphon uses the
+client-credentials flow — no OAuth, no user scopes. When either
+credential is missing or the API misses, the search-URL fallback
+kicks in silently, so the feature is purely additive.
 
 ## All make targets at a glance
 

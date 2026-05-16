@@ -16,6 +16,7 @@ from __future__ import annotations
 import sys
 import urllib.parse
 
+from scripts import _spotify
 from scripts._lastfm import call
 from scripts.cooldown import recent_recs
 from scripts.profile import get_username
@@ -57,6 +58,16 @@ def similar_artists(artist: str, limit: int = 10) -> list[tuple[str, float]]:
 
 
 def spotify_url(artist: str, track: str = "") -> str:
+    """Resolve to a direct Spotify URL if credentials let us; fall back to a search URL.
+
+    Returns a track URL when both `artist` and `track` are given, an
+    artist URL when only `artist` is given. Falls back silently to the
+    search URL when credentials are missing or the API returns no hit.
+    """
+    if _spotify.is_available():
+        direct = _spotify.search_track(artist, track) if track else _spotify.search_artist(artist)
+        if direct:
+            return direct
     query = f"{artist} {track}".strip()
     return SPOTIFY_SEARCH + urllib.parse.quote(query)
 

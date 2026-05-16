@@ -27,6 +27,7 @@ import urllib.parse
 from datetime import date
 from pathlib import Path
 
+from scripts import _spotify
 from scripts._lastfm import call
 from scripts.profile import get_username
 
@@ -165,6 +166,16 @@ PICKERS = {
 
 
 def spotify_url(artist: str, track: str) -> str:
+    """Resolve to a direct Spotify track URL if credentials let us; fall back to a search URL.
+
+    The function signature is stable. Callers do not care whether the
+    URL is a direct `/track/<id>` or a `/search/<query>` — both open
+    the right thing in the Spotify client.
+    """
+    if _spotify.is_available():
+        direct = _spotify.search_track(artist, track)
+        if direct:
+            return direct
     query = f"{artist} {track}".strip()
     return SPOTIFY_SEARCH + urllib.parse.quote(query)
 

@@ -19,6 +19,7 @@ import re
 import sys
 import urllib.parse
 
+from scripts import _spotify
 from scripts._moods import (
     MOODS_MD,
     find_mood_section,
@@ -32,6 +33,21 @@ SPOTIFY_SEARCH = "https://open.spotify.com/search/"
 
 def spotify_search_url(query: str) -> str:
     return SPOTIFY_SEARCH + urllib.parse.quote(query)
+
+
+def spotify_url(artist: str, album: str | None = None) -> str:
+    """Resolve to a direct Spotify album/artist URL when credentials allow; else search URL.
+
+    Picks in `moods.md` are usually albums (`artist — album`) but can
+    be artist-only. Falls back silently to the search URL when
+    credentials are missing or the API returns no hit.
+    """
+    if _spotify.is_available():
+        direct = _spotify.search_album(artist, album) if album else _spotify.search_artist(artist)
+        if direct:
+            return direct
+    query = f"{artist} {album}".strip() if album else artist
+    return spotify_search_url(query)
 
 
 def render(mood_name: str, mood_section: str) -> str:
@@ -50,9 +66,8 @@ def render(mood_name: str, mood_section: str) -> str:
         lines.append("")
         for pick in picks:
             artist, album = parse_pick(pick)
-            query = f"{artist} {album}" if album else artist
             display = f"{artist} — {album}" if album else artist
-            lines.append(f"- [{display}]({spotify_search_url(query)})")
+            lines.append(f"- [{display}]({spotify_url(artist, album)})")
         lines.append("")
 
     if not any_picks:

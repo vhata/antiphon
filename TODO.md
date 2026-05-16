@@ -24,8 +24,6 @@ This file should stay short and honest.
 
 ## Maybe
 
-- **Spotify Web API (Client Credentials)** — direct track URIs
-  instead of search URLs. ~10 minutes of setup to register an app.
 - **Held in reserve: YAML frontmatter for structured Markdown** —
   the established Markdown-meets-structure pattern (Hugo / Jekyll /
   MDX). If the shared-parser approach hits a real wall — a parsing
