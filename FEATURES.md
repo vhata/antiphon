@@ -111,6 +111,14 @@ Legend: ✓ shipped · ⋯ in progress
   those files imports here rather than re-implementing the regex.
   Internal API but user-visible benefit is consistency: edits done
   by one script land the same way as edits done by another.
+- ✓ **SQLite scrobble cache** (`scripts/_cache.py`; `antiphon.db` at
+  the repo root, gitignored) — on-demand cache of raw scrobble events
+  keyed on UNIX timestamp, with per-user `oldest_uts_cached` /
+  `newest_uts_cached` watermarks. `get_scrobbles(user, from_uts,
+  to_uts)` extends the cache by contiguous interval and returns dicts
+  shaped like `user.getRecentTracks` track entries. Stdlib-only. No
+  caller yet — internal infrastructure that future scrobble-window
+  scripts will adopt. Deliberate graduation per `WISHLIST.md` § 4.
 - ✓ **Text-first state hierarchy** (`CLAUDE.md` § Where state lives) —
   Markdown for human-curated state, JSON when text gets awkward (none
   yet), SQLite on the becomes-software side of `WISHLIST.md` § 4 and

@@ -109,13 +109,17 @@ Antiphon's state is text-first by deliberate choice. The hierarchy:
   diff and edit them.
 - **JSON** for structured-only state when Markdown gets awkward —
   none yet. Add when forced; gitignore by default.
-- **SQLite** is on the *becomes-software* side of `WISHLIST.md` § 4.
-  Do not introduce it casually; it is a deliberate graduation.
+- **SQLite** for scrobble events only — the local cache at
+  `antiphon.db` (gitignored), wrapped by `scripts/_cache.py`. This
+  was a deliberate graduation over the `WISHLIST.md` § 4 line; do
+  not extend it to anything other than raw scrobbles without a
+  second deliberate decision. Aggregations, similar-artist queries,
+  tags, etc. stay live.
 
-Live data (scrobbles, similar artists, etc.) is fetched from the
-last.fm API per-call; nothing is cached on disk. Claude's own
-session-handoff state lives separately at
-`~/.claude/projects/.../memory/` — outside the repo by design.
+Live data other than scrobbles (similar artists, tags, top artists,
+etc.) is fetched from the last.fm API per-call; nothing else is
+cached on disk. Claude's own session-handoff state lives separately
+at `~/.claude/projects/.../memory/` — outside the repo by design.
 
 ## Helper scripts
 
@@ -369,7 +373,9 @@ always be artists already in the user's library.
 
 ## Minimising API calls
 
-- Cache nothing on disk — each session re-fetches. Listening history changes.
+- Scrobble events are cached on disk via `scripts/_cache.py` (see
+  *Where state lives*); aggregations, similar-artist queries, and
+  tag endpoints stay live and refetch per session.
 - Within a single session, reuse fetched data; don't re-call the same
   endpoint with the same params twice.
 - Prefer one wide call (`limit=200`) over many paginated ones when you
