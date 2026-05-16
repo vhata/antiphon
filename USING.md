@@ -44,7 +44,7 @@ After `make install` (uv-managed Python deps):
 | --------------------------------------- | ----------------------------------------------------------------------- |
 | `make profile`                          | Compact listening-shape across 4 time windows + recent + loved.         |
 | `make dashboard`                        | Glanceable single-screen snapshot: top artists × 4 windows, 30-day sparkline, top tags, mood-library health, cool-down, loved-tracks delta. |
-| `make heatmap DAYS=90`                  | Day-of-week × hour-of-day listening density grid in local time.         |
+| `make heatmap DAYS=90`                  | Day-of-week × hour-of-day listening density grid in local time. Filters scrobbles matching `sleep_albums.md` (if present); pass `--include-sleep` for the raw view. |
 | `make gems`                             | Dormant artists in the overall top 100–500 (forgotten-gem retrieval).   |
 | `make recent N=7`                       | Last N days of scrobbles + per-artist tally for the period.             |
 | `make similar ARTIST='X' N=20`          | Artists similar to X, with library overlap marked (gaps flagged).       |
@@ -77,14 +77,15 @@ credentials.
 
 ## Files you edit
 
-| File           | Purpose                                                              |
-| -------------- | -------------------------------------------------------------------- |
-| `user.md`      | Your last.fm username + any personal listening notes for Claude.     |
-| `.env`         | Your last.fm API key (`LASTFM_API_KEY`).                             |
-| `moods.md`     | Per-mood validated and candidate picks; evolves as you use Antiphon. |
-| `dislikes.md`  | Anti-rec list; appended automatically by Claude when you reject.     |
+| File                | Purpose                                                                |
+| ------------------- | ---------------------------------------------------------------------- |
+| `user.md`           | Your last.fm username + any personal listening notes for Claude.       |
+| `.env`              | Your last.fm API key (`LASTFM_API_KEY`).                               |
+| `moods.md`          | Per-mood validated and candidate picks; evolves as you use Antiphon.   |
+| `dislikes.md`       | Anti-rec list; appended automatically by Claude when you reject.       |
+| `sleep_albums.md`   | Records you fall asleep to; filtered out of the heat-map (optional).   |
 
-All four are gitignored — a fork-er gets the `.example` templates
+All five are gitignored — a fork-er gets the `.example` templates
 and fills in their own.
 
 ## All make targets at a glance

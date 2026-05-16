@@ -105,8 +105,8 @@ are deliberately on the right side of that line.
 Antiphon's state is text-first by deliberate choice. The hierarchy:
 
 - **Markdown** for human-curated state — `user.md`, `moods.md`,
-  `dislikes.md`. Scripts read and write these in place; humans can
-  diff and edit them.
+  `dislikes.md`, `sleep_albums.md`. Scripts read and write these in
+  place; humans can diff and edit them.
 - **JSON** for structured-only state when Markdown gets awkward —
   none yet. Add when forced; gitignore by default.
 - **SQLite** is on the *becomes-software* side of `WISHLIST.md` § 4.
