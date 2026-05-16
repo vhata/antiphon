@@ -5,12 +5,17 @@ Usage:
     make heatmap [DAYS=90]
 
 Pulls the listener's recent scrobbles in the chosen window (default
-90 days), buckets them into a 7×24 grid by day-of-week and hour-of-day
-in *local* time, and renders the result as block characters scaled to
-the peak cell.
+90 days) via the on-demand SQLite scrobble cache (`scripts/_cache.py`),
+buckets them into a 7×24 grid by day-of-week and hour-of-day in *local*
+time, and renders the result as block characters scaled to the peak
+cell.
 
 The local-time choice matters: scrobbles are stored in UTC, but
 "when do I listen" is only meaningful in the listener's timezone.
+
+Repeat runs hit the cache: the first invocation populates it from the
+live API; subsequent runs over the same window do no network work. A
+widened window fetches only the gap.
 
 If `sleep_albums.md` exists at the repo root, scrobbles matching any
 of its (artist, album) entries are filtered out before bucketing so
@@ -24,12 +29,10 @@ import sys
 from datetime import UTC, datetime, timedelta, tzinfo
 from typing import Any
 
-from scripts import _sleep
-from scripts._lastfm import call
+from scripts import _cache, _sleep
 from scripts.profile import get_username
 
 DEFAULT_DAYS = 90
-PAGE_LIMIT = 200
 BLOCKS = " ▁▂▃▄▅▆▇█"  # leading space = empty cell; eight density steps after
 DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
@@ -104,30 +107,11 @@ def render_grid(grid: list[list[int]]) -> str:
 
 
 def _fetch_window(user: str, days: int) -> list[dict[str, Any]]:
-    """Paginate user.getRecentTracks back `days` days."""
-    cutoff_ts = int((datetime.now(UTC) - timedelta(days=days)).timestamp())
-    tracks: list[dict[str, Any]] = []
-    page = 1
-    while True:
-        response = call(
-            "user.getRecentTracks",
-            user=user,
-            limit=PAGE_LIMIT,
-            page=page,
-            **{"from": cutoff_ts},
-        )
-        page_tracks = response.get("recenttracks", {}).get("track", [])
-        if isinstance(page_tracks, dict):
-            page_tracks = [page_tracks]
-        if not page_tracks:
-            break
-        tracks.extend(page_tracks)
-        attrs = response.get("recenttracks", {}).get("@attr", {})
-        total_pages = int(attrs.get("totalPages", 1))
-        if page >= total_pages:
-            break
-        page += 1
-    return tracks
+    """Return scrobbles for the last `days` days, via the on-demand cache."""
+    now = datetime.now(UTC)
+    from_uts = int((now - timedelta(days=days)).timestamp())
+    to_uts = int(now.timestamp())
+    return _cache.get_scrobbles(user, from_uts, to_uts)
 
 
 def main(days: int = DEFAULT_DAYS, include_sleep: bool = False) -> int:
