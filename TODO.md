@@ -17,6 +17,18 @@ This file should stay short and honest.
 
 ## Next
 
+- **Sleep-album filter for behavioural views.** Listener-specific
+  filter list (artist + album combos) read from a gitignored
+  `sleep_albums.md` with a committed `.example` template. The
+  heatmap (and future behavioural views) excludes scrobbles
+  matching the filter before bucketing, so early-morning cells
+  reflect actual activity rather than 8-hour overnight tails of
+  *Mezzanine*, *Dummy*, *From Sleep* and the like. Parser lives
+  alongside the existing `_moods.py` / `_dislikes.py` shared
+  modules. Heatmap gets an `--include-sleep` flag for the raw
+  view. The on-disk list is small and append-only as new sleep
+  records surface in conversation.
+
 
 ## Soon
 
