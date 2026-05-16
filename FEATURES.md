@@ -85,6 +85,15 @@ Legend: ✓ shipped · ⋯ in progress
   overall top 100), *comfort returners* (also in overall top 25),
   and *mid-tier* (overall rank 26-100). Plus a one-line volume note.
   Periodic check-in when a real period boundary hits.
+- ✓ **Listening snapshot dashboard** (`scripts/dashboard.py`;
+  `make dashboard`) — single-screen `rich`-formatted view of the
+  listener's current shape: top artists across the four time windows
+  side-by-side, a 30-day scrobble sparkline, top tags, mood-library
+  fullness (with thin moods flagged), the cool-down list, and a
+  loved-tracks weekly delta. Static one-shot — no persistent state,
+  no interactivity — so it stays on the right side of
+  `WISHLIST.md` § 4. First runtime dep (`rich`); pure data-shaping
+  functions are unit-tested separately from the layout.
 - ✓ **Shared Markdown parser modules** (`scripts/_moods.py`,
   `scripts/_dislikes.py`) — single source of truth for parsing and
   mutating `moods.md` and `dislikes.md`. Every script that touches

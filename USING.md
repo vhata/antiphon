@@ -43,6 +43,7 @@ After `make install` (uv-managed Python deps):
 | Command                                 | What it does                                                            |
 | --------------------------------------- | ----------------------------------------------------------------------- |
 | `make profile`                          | Compact listening-shape across 4 time windows + recent + loved.         |
+| `make dashboard`                        | Glanceable single-screen snapshot: top artists × 4 windows, 30-day sparkline, top tags, mood-library health, cool-down, loved-tracks delta. |
 | `make gems`                             | Dormant artists in the overall top 100–500 (forgotten-gem retrieval).   |
 | `make recent N=7`                       | Last N days of scrobbles + per-artist tally for the period.             |
 | `make similar ARTIST='X' N=20`          | Artists similar to X, with library overlap marked (gaps flagged).       |

@@ -23,7 +23,7 @@ ifneq ($(filter $(ARG_TAKING_TARGETS),$(firstword $(MAKECMDGOALS))),)
 	@true
 endif
 
-.PHONY: help install check format lint typecheck test clean profile gems setup mood reject validate add-mood recent similar stats
+.PHONY: help install check format lint typecheck test clean profile gems setup mood reject validate add-mood recent similar stats dashboard
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z][a-zA-Z0-9_-]*:.*?##' $(MAKEFILE_LIST) \
@@ -147,6 +147,9 @@ daily: ## Today's one-track horoscope (date-keyed; same pick on re-run)
 
 review: ## Period-in-music report (PERIOD={week,month,quarter,year}; default month)
 	uv run python -m scripts.review "$(PERIOD)"
+
+dashboard: ## Glanceable single-screen listening snapshot
+	uv run python -m scripts.dashboard
 
 depth: ## Artist depth check (ARTIST='X' or positional)
 	@_artist="$(or $(ARTIST),$(POSITIONAL_ARGS))"; \

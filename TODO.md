@@ -24,16 +24,6 @@ This file should stay short and honest.
 
 ## Maybe
 
-- **`make dashboard` — glanceable listening snapshot.** Single
-  command, `rich`-formatted full-screen panel: top 5 artists across
-  the 4 time windows (7day / 1month / 6month / overall) side-by-side,
-  30-day scrobble sparkline, top tags, mood-library fullness (which
-  moods are thin on candidates), cool-down count, weekly loved-tracks
-  delta. Static one-shot — stays on the right side of `WISHLIST.md §4`
-  so long as it remains a text-emitting script with no persistent
-  state or interactivity. Adds `rich` as a dep. Idea-time rationale:
-  surfaced when the listener wanted a passive read on their listening
-  while out of the house and unable to play music.
 - **`make timeline` — discovery timeline of top-50 artists.** For
   each artist in the overall top 50, find the date of their first
   scrobble; print a year-by-year list of "in {year}, you discovered
