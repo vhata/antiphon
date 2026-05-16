@@ -9,6 +9,12 @@ session.log.md
 daily.log.md
 AUDIT.md
 
+# Local scrobble cache (see scripts/_cache.py).
+antiphon.db
+antiphon.db-journal
+antiphon.db-wal
+antiphon.db-shm
+
 # macOS
 .DS_Store
 
