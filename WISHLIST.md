@@ -137,7 +137,7 @@ The two middle-ground extensions in the list below (**iOS Shortcut**, **MCP serv
 
 Right now the project has near-zero application code — `CLAUDE.md` + `moods.md` is the brain, and a few Python helpers wrap the data layer. The items below would each push it further across the line, and each is held back deliberately:
 
-- **Local scrobble cache (SQLite)** — pull all-time scrobbles once, then incremental updates. Avoids repeated full-library API calls and unlocks proper analytics.
+- **Local scrobble cache (SQLite)** — *moved to `TODO.md` Next on 2026-05-15.* The chosen design is an *on-demand* cache rather than a one-time backfill: queries for `[t0, t1]` extend the cached range contiguously on either end as needed, so the cache grows only when a feature actually wants the data. Scope strictly limited to scrobble events; derived aggregations and metadata stay live. See `TODO.md` for the full design.
 - **Scheduled jobs** — cron / launchd / GitHub Actions: nightly pull, weekly digest, monthly retrospective.
 - **Real CLI** — `antiphon recs`, `antiphon mood small-hours`, `antiphon chase`, `antiphon depth pink-floyd`. TypeScript or Python, single binary, dotenv for keys.
 - **Web UI / dashboard** — local Next.js app, charts, mood library, rec inbox.

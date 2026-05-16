@@ -17,6 +17,45 @@ This file should stay short and honest.
 
 ## Next
 
+- **SQLite scrobble cache (on-demand, contiguous-range model).**
+  A single table `scrobbles(uts INTEGER PRIMARY KEY, artist TEXT,
+  album TEXT, track TEXT)` stored in `antiphon.db` at the repo
+  root (gitignored). Two watermarks — `oldest_uts_cached` and
+  `newest_uts_cached` — track the cached interval. Every
+  scrobble-shaped query for `[t0, t1]`:
+  - If `t1 > newest_uts_cached`, fetch `[newest_uts_cached, now]`
+    from `user.getRecentTracks`, append, advance the upper
+    watermark.
+  - If `t0 < oldest_uts_cached`, fetch `[t0, oldest_uts_cached]`
+    from `user.getRecentTracks`, append, push the lower watermark
+    back.
+  - Then read `[t0, t1]` straight from SQLite.
+
+  Because both extensions are always contiguous, the cached data
+  is a single unbroken interval — no gap-tracking, no coverage
+  ledger. UTS as primary key means duplicate inserts from overlaps
+  are free.
+
+  **Scope is strictly scrobble events.** Derived aggregations
+  (`user.getTopArtists`, `user.getTopAlbums`) and metadata
+  endpoints (`artist.getInfo`, `artist.getSimilar`,
+  `artist.getTopTags`) are NEVER cached — they drift over time and
+  must stay live.
+
+  Lives in a new shared `scripts/_cache.py` module beside
+  `_lastfm.py`. `sqlite3` is Python stdlib, so no new runtime
+  dependency. `make clean` wipes the cache; deletion is always
+  safe because the cache is not a source of truth — last.fm is.
+
+  Migration is incremental: scripts that need scrobble history
+  (`heatmap`, a future `timeline`, the pulse panel of `dashboard`,
+  `recent`, `rut`) move to the cache one by one. Everything else
+  stays on live API.
+
+  This is the deliberate graduation flagged in `WISHLIST.md §4`
+  for the scrobble-cache item specifically. Other items in §4
+  (real CLI, web UI, etc.) remain held back.
+
 - **Sleep-album filter for behavioural views.** Listener-specific
   filter list (artist + album combos) read from a gitignored
   `sleep_albums.md` with a committed `.example` template. The
