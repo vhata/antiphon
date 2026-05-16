@@ -88,11 +88,12 @@ Legend: ✓ shipped · ⋯ in progress
 - ✓ **Listening heat-map** (`scripts/heatmap.py`; `make heatmap
   [DAYS=90]`) — 7×24 grid of scrobble density by day-of-week and
   hour-of-day, rendered as block characters scaled to the peak cell.
-  Paginates `user.getRecentTracks` back the configured window.
-  Timestamps are interpreted in the listener's *local* timezone
-  (scrobbles are stored in UTC, but the question "when do I listen?"
-  is only meaningful locally). Pure bucketing + render functions are
-  unit-tested separately from the API plumbing.
+  Reads scrobbles via `scripts/_cache.py` so repeat runs over the
+  same window do no API work; widening the window only fetches the
+  uncovered gap. Timestamps are interpreted in the listener's *local*
+  timezone (scrobbles are stored in UTC, but the question "when do I
+  listen?" is only meaningful locally). Pure bucketing + render
+  functions are unit-tested separately from the data plumbing.
 - ✓ **Sleep-album filter for behavioural views** (`sleep_albums.md`,
   gitignored; `sleep_albums.example.md` template; `scripts/_sleep.py`)
   — listener-specific list of records they fall asleep to. The
@@ -124,9 +125,10 @@ Legend: ✓ shipped · ⋯ in progress
   keyed on UNIX timestamp, with per-user `oldest_uts_cached` /
   `newest_uts_cached` watermarks. `get_scrobbles(user, from_uts,
   to_uts)` extends the cache by contiguous interval and returns dicts
-  shaped like `user.getRecentTracks` track entries. Stdlib-only. No
-  caller yet — internal infrastructure that future scrobble-window
-  scripts will adopt. Deliberate graduation per `WISHLIST.md` § 4.
+  shaped like `user.getRecentTracks` track entries. Stdlib-only.
+  First adopter: `scripts/heatmap.py`. Other scrobble-window scripts
+  (`recent`, `rut`, `dashboard`) to follow. Deliberate graduation per
+  `WISHLIST.md` § 4.
 - ✓ **Text-first state hierarchy** (`CLAUDE.md` § Where state lives) —
   Markdown for human-curated state, JSON when text gets awkward (none
   yet), SQLite on the becomes-software side of `WISHLIST.md` § 4 and
