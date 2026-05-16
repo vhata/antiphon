@@ -16,7 +16,7 @@ import sys
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from scripts._lastfm import call
+from scripts._cache import get_scrobbles, now_uts
 from scripts.profile import get_username
 
 DEFAULT_DAYS = 14
@@ -26,16 +26,8 @@ MIN_SCROBBLES = 30
 
 
 def detect_rut(user: str, days: int = DEFAULT_DAYS) -> dict[str, Any]:
-    cutoff = datetime.now(UTC) - timedelta(days=days)
-    cutoff_ts = int(cutoff.timestamp())
-
-    response = call(
-        "user.getRecentTracks",
-        user=user,
-        limit=200,
-        **{"from": cutoff_ts},
-    )
-    tracks = response["recenttracks"]["track"]
+    cutoff_ts = int((datetime.now(UTC) - timedelta(days=days)).timestamp())
+    tracks = get_scrobbles(user, cutoff_ts, now_uts())
 
     counts: dict[str, int] = {}
     for track in tracks:

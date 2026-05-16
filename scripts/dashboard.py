@@ -22,6 +22,7 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
+from scripts._cache import get_scrobbles, now_uts
 from scripts._lastfm import call
 from scripts._moods import MOODS_MD, find_mood_section, list_moods, picks_in
 from scripts.cooldown import recent_recs
@@ -130,15 +131,8 @@ def loved_in_window(
 
 
 def _fetch_pulse_tracks(user: str) -> list[dict[str, Any]]:
-    cutoff = datetime.now(UTC) - timedelta(days=PULSE_DAYS)
-    response = call(
-        "user.getRecentTracks",
-        user=user,
-        limit=200,
-        **{"from": int(cutoff.timestamp())},
-    )
-    tracks = response.get("recenttracks", {}).get("track", [])
-    return list(tracks) if isinstance(tracks, list) else [tracks]
+    cutoff_ts = int((datetime.now(UTC) - timedelta(days=PULSE_DAYS)).timestamp())
+    return get_scrobbles(user, cutoff_ts, now_uts())
 
 
 def _header_panel(user: str, total_plays: int) -> Panel:

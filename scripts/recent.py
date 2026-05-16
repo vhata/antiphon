@@ -4,7 +4,8 @@ Usage:
     uv run python -m scripts.recent [N]
     make recent N=7
 
-Default N is 7. Caps at the most recent 200 scrobbles in the window.
+Default N is 7. Reads scrobbles through `scripts._cache` so repeat
+runs over the same window do no API work.
 """
 
 from __future__ import annotations
@@ -12,28 +13,20 @@ from __future__ import annotations
 import sys
 from datetime import UTC, datetime, timedelta
 
-from scripts._lastfm import call
+from scripts._cache import get_scrobbles, now_uts
 from scripts.profile import get_username
 
 DEFAULT_DAYS = 7
-PAGE_LIMIT = 200
 
 
 def main(days: int = DEFAULT_DAYS) -> None:
     user = get_username()
-    cutoff = datetime.now(UTC) - timedelta(days=days)
-    cutoff_ts = int(cutoff.timestamp())
+    cutoff_ts = int((datetime.now(UTC) - timedelta(days=days)).timestamp())
 
     print(f"=== {user} — last {days} days of scrobbles ===")
     print()
 
-    response = call(
-        "user.getRecentTracks",
-        user=user,
-        limit=PAGE_LIMIT,
-        **{"from": cutoff_ts},
-    )
-    tracks = response["recenttracks"]["track"]
+    tracks = get_scrobbles(user, cutoff_ts, now_uts())
 
     for track in tracks:
         artist = track.get("artist", {}).get("#text", "?")

@@ -102,6 +102,12 @@ Legend: ✓ shipped · ⋯ in progress
   overnight tails of long-form ambient. Pass `--include-sleep` to
   the heat-map for the raw view. Parser lives beside `_moods.py` /
   `_dislikes.py`; absence of the file is a clean no-op.
+- ✓ **Cache adoption: `recent`, `rut`, `dashboard` pulse** — all
+  three scripts now read scrobble windows via `scripts/_cache.py`
+  instead of paginating `user.getRecentTracks` directly. Repeat runs
+  over the same window do no API work; widening the window only
+  fetches the uncovered gap. No user-visible behaviour change beyond
+  speed.
 - ✓ **Discovery timeline** (`scripts/timeline.py`; `make timeline
   [N=50]`) — for each of the listener's overall top-N artists,
   finds the date of their first scrobble and emits a year-by-year

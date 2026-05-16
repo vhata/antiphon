@@ -17,12 +17,6 @@ This file should stay short and honest.
 
 ## Next
 
-- **Migrate remaining scrobble-window scripts to the cache.** The
-  cache module (`scripts/_cache.py`) and the heat-map have moved
-  over; `recent`, `rut`, and the pulse panel of `dashboard` are
-  still on direct paginated `user.getRecentTracks` calls. One PR
-  per script keeps blast radius small.
-
 ## Soon
 
 *(none — see `WISHLIST.md` for the broader design space)*
