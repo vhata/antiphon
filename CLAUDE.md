@@ -129,6 +129,7 @@ Run via `make` targets after sourcing `.env`:
 ```sh
 make profile                              # listening-shape summary across 4 time windows + loved
 make dashboard                            # glanceable single-screen snapshot (rich-formatted, for humans)
+make heatmap                              # day-of-week × hour-of-day listening density grid
 make gems                                 # dormant artists in the overall top 100-500
 make recent N=7                           # last N days of scrobbles + per-artist tally
 make similar ARTIST='Massive Attack' N=20 # similar-artists with library overlap (gaps marked)

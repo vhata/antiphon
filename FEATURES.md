@@ -85,6 +85,14 @@ Legend: ✓ shipped · ⋯ in progress
   overall top 100), *comfort returners* (also in overall top 25),
   and *mid-tier* (overall rank 26-100). Plus a one-line volume note.
   Periodic check-in when a real period boundary hits.
+- ✓ **Listening heat-map** (`scripts/heatmap.py`; `make heatmap
+  [DAYS=90]`) — 7×24 grid of scrobble density by day-of-week and
+  hour-of-day, rendered as block characters scaled to the peak cell.
+  Paginates `user.getRecentTracks` back the configured window.
+  Timestamps are interpreted in the listener's *local* timezone
+  (scrobbles are stored in UTC, but the question "when do I listen?"
+  is only meaningful locally). Pure bucketing + render functions are
+  unit-tested separately from the API plumbing.
 - ✓ **Listening snapshot dashboard** (`scripts/dashboard.py`;
   `make dashboard`) — single-screen `rich`-formatted view of the
   listener's current shape: top artists across the four time windows

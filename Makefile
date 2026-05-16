@@ -23,7 +23,7 @@ ifneq ($(filter $(ARG_TAKING_TARGETS),$(firstword $(MAKECMDGOALS))),)
 	@true
 endif
 
-.PHONY: help install check format lint typecheck test clean profile gems setup mood reject validate add-mood recent similar stats dashboard
+.PHONY: help install check format lint typecheck test clean profile gems setup mood reject validate add-mood recent similar stats dashboard heatmap
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z][a-zA-Z0-9_-]*:.*?##' $(MAKEFILE_LIST) \
@@ -150,6 +150,9 @@ review: ## Period-in-music report (PERIOD={week,month,quarter,year}; default mon
 
 dashboard: ## Glanceable single-screen listening snapshot
 	uv run python -m scripts.dashboard
+
+heatmap: ## Day-of-week × hour-of-day listening heat-map ([DAYS=90])
+	uv run python -m scripts.heatmap "$(DAYS)"
 
 depth: ## Artist depth check (ARTIST='X' or positional)
 	@_artist="$(or $(ARTIST),$(POSITIONAL_ARGS))"; \

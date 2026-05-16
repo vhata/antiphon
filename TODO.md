@@ -30,11 +30,6 @@ This file should stay short and honest.
   {artist}". Narrative, not real-time. Caveat: a full historical
   scrobble scan is expensive (deep `user.getRecentTracks` pagination)
   and may force the `WISHLIST.md §4` SQLite question if used often.
-- **`make heatmap` — ASCII listening heat-map.** Hours-of-day ×
-  days-of-week density grid. Behavioural, not musical — reveals
-  *when* you listen. Promotes the "Day-of-week / time-of-day
-  distributions" idea from `WISHLIST.md §6`. Same data-cost concern
-  as `timeline`.
 - **(Explicitly deferred)** Interactive `textual` TUI with
   navigation, key bindings, and persistent state — over the
   `WISHLIST.md §4` line (real application code). Re-evaluate only
