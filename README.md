@@ -17,11 +17,18 @@ reasoning in chat.
 
 ## Design properties
 
-- **Local-first.** Your listening data is read from last.fm during a
-  session and used to produce recommendations on the spot. Nothing
-  is cached or logged on disk. The single exception is `make
-  populate-mood`, which sends mood context to Claude headless when
-  you explicitly invoke it.
+- **Local-first.** Your listening data is fetched from last.fm and
+  used to produce recommendations on the spot. The only data that
+  leaves your machine is the explicit invocation of `make
+  populate-mood`, which sends mood context to Claude headless. A
+  handful of small files persist locally (all gitignored,
+  listener-specific): a SQLite cache of raw scrobble events at
+  `antiphon.db` (purely a performance layer over the last.fm API —
+  delete it and the next run rebuilds), an append-only `session.log.md`
+  for the cool-down convention, a `daily.log.md` for the daily
+  one-track horoscope, and an optional `sleep_albums.md` filter list.
+  Aggregations, similar-artist queries, and tag endpoints are not
+  cached and refetch per session.
 - **Markdown is the architecture.** Antiphon stays in Markdown form
   for as long as it can. The line at which it would graduate to
   real software is documented in [`WISHLIST.md`](WISHLIST.md) § 4.

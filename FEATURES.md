@@ -141,9 +141,8 @@ Legend: ✓ shipped · ⋯ in progress
   `newest_uts_cached` watermarks. `get_scrobbles(user, from_uts,
   to_uts)` extends the cache by contiguous interval and returns dicts
   shaped like `user.getRecentTracks` track entries. Stdlib-only.
-  First adopter: `scripts/heatmap.py`. Other scrobble-window scripts
-  (`recent`, `rut`, `dashboard`) to follow. Deliberate graduation per
-  `WISHLIST.md` § 4.
+  Adopted by `heatmap`, `recent`, `rut`, `dashboard` (pulse panel),
+  and `timeline`. Deliberate graduation per `WISHLIST.md` § 4.
 - ✓ **Text-first state hierarchy** (`CLAUDE.md` § Where state lives) —
   Markdown for human-curated state, JSON when text gets awkward (none
   yet), SQLite on the becomes-software side of `WISHLIST.md` § 4 and

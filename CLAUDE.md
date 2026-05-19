@@ -151,6 +151,7 @@ make depth ARTIST='Pink Floyd'             # artist's canonical albums vs your p
 make rut DAYS=14                           # detect listening rut (top-artist concentration)
 make daily                                 # today's one-track horoscope (idempotent per day)
 make review PERIOD=month                   # period-in-music report (week/month/quarter/year)
+make timeline [N=50]                       # year-by-year first-scrobble walk for the top-N artists
 ```
 
 Or directly: `uv run python -m scripts.<name> [args]`.
