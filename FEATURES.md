@@ -108,6 +108,14 @@ Legend: ✓ shipped · ⋯ in progress
   over the same window do no API work; widening the window only
   fetches the uncovered gap. No user-visible behaviour change beyond
   speed.
+- ✓ **Forgotten-tracks mode** (`scripts/forgotten_tracks.py`;
+  `make gems TYPE=tracks`) — track-level sibling to forgotten gems.
+  Queries the local scrobble cache for songs the listener played
+  heavily but hasn't touched in over a year. Defaults to ≥20 plays
+  and 365 days dormancy; overridable via `N`/`MIN_PLAYS`/`DORMANCY_DAYS`.
+  Sorts by play count descending, prints last-played date alongside
+  each row. Requires a backfilled cache (run `make timeline` once
+  to seed it); emits a friendly hint when the cache is cold.
 - ✓ **Discovery timeline** (`scripts/timeline.py`; `make timeline
   [N=50]`) — for each of the listener's overall top-N artists,
   finds the date of their first scrobble and emits a year-by-year

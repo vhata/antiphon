@@ -47,6 +47,7 @@ After `make install` (uv-managed Python deps):
 | `make heatmap DAYS=90`                  | Day-of-week × hour-of-day listening density grid in local time. Filters scrobbles matching `sleep_albums.md` (if present); pass `--include-sleep` for the raw view. |
 | `make timeline N=50`                    | Year-by-year discovery walk: for each of the top-N artists, the year you first scrobbled them. First run backfills the local cache (slow); subsequent runs are instant. |
 | `make gems`                             | Dormant artists in the overall top 100–500 (forgotten-gem retrieval).   |
+| `make gems TYPE=tracks`                 | Dormant *tracks*: songs you played ≥20 times but not in the last year. Reads the local scrobble cache; tuneable via `N`, `MIN_PLAYS`, `DORMANCY_DAYS`. |
 | `make recent N=7`                       | Last N days of scrobbles + per-artist tally for the period.             |
 | `make similar ARTIST='X' N=20`          | Artists similar to X, with library overlap marked (gaps flagged).       |
 | `make stats`                            | Library-coverage diagnostic: top-N concentration, long-tail size.       |

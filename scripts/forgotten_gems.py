@@ -51,5 +51,5 @@ def main(n: int = DEFAULT_N) -> None:
 
 
 if __name__ == "__main__":
-    n = int(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_N
+    n = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1] else DEFAULT_N
     main(n)

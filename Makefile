@@ -63,8 +63,12 @@ clean: ## Remove cache directories
 profile: ## Print the listening-shape profile
 	uv run python -m scripts.profile
 
-gems: ## Print forgotten gems
-	uv run python -m scripts.forgotten_gems
+gems: ## Forgotten favourites — artists (default) or tracks (TYPE=tracks)
+	@if [ "$(TYPE)" = "tracks" ]; then \
+		uv run python -m scripts.forgotten_tracks "$(N)" "$(MIN_PLAYS)" "$(DORMANCY_DAYS)"; \
+	else \
+		uv run python -m scripts.forgotten_gems "$(N)"; \
+	fi
 
 mood: ## Print a mood's picks (NAME='X' or positional). No arg lists all.
 	uv run python -m scripts.mood "$(or $(NAME),$(POSITIONAL_ARGS))"
