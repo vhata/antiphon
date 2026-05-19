@@ -18,6 +18,11 @@ from typing import Any, cast
 API_BASE = "https://ws.audioscrobbler.com/2.0/"
 ENV_PATH = Path(__file__).resolve().parent.parent / ".env"
 
+# Per-request timeout for last.fm calls. Without this, a dropped TCP
+# connection causes urlopen() to block indefinitely (no default in
+# Python's urllib), which has hung multi-hour backfills in the past.
+REQUEST_TIMEOUT_SECONDS = 30.0
+
 
 def _load_env_file() -> None:
     """If LASTFM_API_KEY is unset, try to populate it from .env at repo root.
@@ -57,7 +62,11 @@ def _api_key() -> str:
 
 
 def call(method: str, **params: str | int) -> dict[str, Any]:
-    """Call a last.fm API method and return the parsed JSON response."""
+    """Call a last.fm API method and return the parsed JSON response.
+
+    Applies `REQUEST_TIMEOUT_SECONDS` so a dropped connection raises
+    `socket.timeout` instead of hanging indefinitely.
+    """
     query: dict[str, str] = {
         "method": method,
         "api_key": _api_key(),
@@ -66,5 +75,7 @@ def call(method: str, **params: str | int) -> dict[str, Any]:
     for name, value in params.items():
         query[name] = str(value)
     url = f"{API_BASE}?{urllib.parse.urlencode(query)}"
-    with urllib.request.urlopen(url) as response:  # noqa: S310 (trusted host)
+    with urllib.request.urlopen(  # noqa: S310 (trusted host)
+        url, timeout=REQUEST_TIMEOUT_SECONDS
+    ) as response:
         return cast(dict[str, Any], json.loads(response.read()))
